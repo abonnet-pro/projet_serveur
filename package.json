@@ -1,0 +1,23 @@
+{
+  "name": "back_nodejs",
+  "version": "1.0.0",
+  "description": "template_back_end",
+  "main": "index.js",
+  "scripts": {
+    "run": "node main.js",
+    "debug": "node --inspect --inspect-brk main.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.5.0",
+    "pg": "^8.5.1",
+    "node-notifier": "^10.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
