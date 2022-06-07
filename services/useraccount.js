@@ -54,18 +54,10 @@ module.exports = class UserAccountService
         return this.comparePassword(password, user.challenge)
     }
 
-    async validateEmail(login)
-    {
-        const user = await this.dao.getByLogin(login)
-        if(user.active === false && user.confirmation !== null) return false
-        return true
-    }
-
     async isActive(login)
     {
         const user = await this.dao.getByLogin(login)
-        if (user.active === true) return true
-        return false
+        return user.active
     }
 
     comparePassword(password, hash)

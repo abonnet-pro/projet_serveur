@@ -14,13 +14,14 @@ paths:
   /employe:
     post:
       summary: Créer un nouvel employé.
-
+      tags:
+        - Employe
       parameters:
         - in: body
           name: employeInformations
           required: true
           schema:
-            $ref: '#/definitions/employeInformations'
+            $ref: '#/definitions/employeCreation'
 
       responses:
         200:
@@ -28,8 +29,29 @@ paths:
         500:
           description: Erreur, voir descriptif de l'erreur
 
+  /employe/authenticate:
+    post:
+      summary: Authentifie un employé.
+      tags:
+        - Employe
+      parameters:
+        - in: body
+          name: employeAuthentifications
+          required: true
+          schema:
+            $ref: '#/definitions/employeAuthentification'
+
+      responses:
+        200:
+          description: Employé authentifié
+          schema:
+            $ref: '#/definitions/employe'
+        500:
+          description: Erreur, voir descriptif de l'erreur
+
+
 definitions:
-  employeInformations:
+  employeCreation:
     type: object
     properties:
       displayname:
@@ -37,4 +59,24 @@ definitions:
       login:
         type: string
       password:
+        type: string
+
+  employeAuthentification:
+    type: object
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+
+  employe:
+    type: object
+    properties:
+      displayname:
+        type: string
+      login:
+        type: string
+      role:
+        type: string
+      token:
         type: string

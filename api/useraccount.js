@@ -21,24 +21,32 @@ module.exports = (app, svc, dirName, jwt) => {
             })
     })
 
-    app.post('/useraccount/authenticate', (req, res) => {
+    app.post('/employe/authenticate', (req, res) => {
         const { login, password } = req.body
+
         if ((login === undefined) || (password === undefined)) {
             return res.status(500).send("Informations invalides")
         }
+
         svc.validatePassword(login, password)
             .then(async authenticated => {
-                if(! await svc.validateEmail(login))
-                {
-                    res.status(403).end()
-                    return
-                }
-                if (!authenticated || ! await svc.isActive(login)) {
-                    res.status(401).end()
-                    return
+                if(!authenticated) {
+                    return res.status(500).send("Couple email / mot de passe invalide")
                 }
 
-                res.json({'token': jwt.generateJWT(login)})
+                if (!await svc.isActive(login)) {
+                    return res.status(500).send("Compte suspendu")
+                }
+
+                const user = await svc.dao.getByLogin(login)
+                const userDTO = {
+                    displayname: user.displayname,
+                    login: user.login,
+                    role: user.role,
+                    token: jwt.generateJWT(login)
+                }
+
+                res.json(userDTO)
             })
             .catch(e => {
                 console.log(e)
