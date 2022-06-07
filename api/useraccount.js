@@ -1,9 +1,30 @@
-module.exports = (app, svc, roleService, dirName, jwt) => {
+module.exports = (app, svc, dirName, jwt) => {
+
+    app.post('/employe/create', async (req, res) => {
+        const useraccount = req.body
+
+        if(!svc.isValid(useraccount))
+        {
+            return res.status(500).send("Informations invalides")
+        }
+
+        if(!await svc.isLoginValid(useraccount.login))
+        {
+            return res.status(500).send("Login déjà utilisé")
+        }
+
+        svc.insert(useraccount.displayname, useraccount.login, useraccount.password)
+            .then(res.status(200).end())
+            .catch(e => {
+                console.log(e)
+                res.status(500).end()
+            })
+    })
+
     app.post('/useraccount/authenticate', (req, res) => {
         const { login, password } = req.body
         if ((login === undefined) || (password === undefined)) {
-            res.status(400).end()
-            return
+            return res.status(500).send("Informations invalides")
         }
         svc.validatePassword(login, password)
             .then(async authenticated => {
@@ -15,16 +36,6 @@ module.exports = (app, svc, roleService, dirName, jwt) => {
                 if (!authenticated || ! await svc.isActive(login)) {
                     res.status(401).end()
                     return
-                }
-
-                let user = await svc.dao.getByLogin(login)
-                let lists = await listService.dao.getAll(user)
-                for(let list of lists)
-                {
-                    if(svc.dateDiff(new Date(), list.date).day <= -7)
-                    {
-                        await notificationService.insertExpireListNotification(user.id, list)
-                    }
                 }
 
                 res.json({'token': jwt.generateJWT(login)})
@@ -54,25 +65,6 @@ module.exports = (app, svc, roleService, dirName, jwt) => {
         catch (e) {
             res.status(400).end()
         }
-
-    })
-
-    app.post('/useraccount/create', async (req, res) => {
-        const useraccount = req.body
-        if(!svc.isValid(useraccount))
-        {
-            return res.status(400).end()
-        }
-        if(! await svc.isLoginValid(useraccount.login))
-        {
-            return res.status(406).end()
-        }
-        svc.insert(useraccount.displayname, useraccount.login, useraccount.password)
-            .then(res.status(200).end())
-            .catch(e => {
-                console.log(e)
-                res.status(500).end()
-            })
     })
 
     app.get("/useraccount/mail/:login", async (req, res) => {
@@ -151,8 +143,7 @@ module.exports = (app, svc, roleService, dirName, jwt) => {
             user.active = true
             user.confirmation = null
             user.confirmationdate = null
-
-            roleService.dao.insert(user.id, "USER")
+            user.role = "EMPLOYE"
 
             await svc.dao.update(user)
                 .then( res.sendFile(`${dirName}/view/confirmation.html`))
@@ -188,10 +179,6 @@ module.exports = (app, svc, roleService, dirName, jwt) => {
     app.get("/useraccount/:login", jwt.validateJWT, async (req, res) => {
         try
         {
-            if(! await roleService.isAdmin(req.user.login))
-            {
-                res.status(401).end()
-            }
             const userList = await svc.dao.getLikeLogin(req.params.login)
             if(userList === undefined)
             {
@@ -276,11 +263,6 @@ module.exports = (app, svc, roleService, dirName, jwt) => {
             return res.status(400).end()
         }
 
-        if(user.id !== req.user.id && !roleService.isAdmin(req.user.login))
-        {
-            return res.status(401).end()
-        }
-
         svc.update(user)
             .then(res.status(200).end())
             .catch(e => {
@@ -292,11 +274,6 @@ module.exports = (app, svc, roleService, dirName, jwt) => {
     app.get("/useraccount", jwt.validateJWT, async (req, res) => {
         try
         {
-            if(! await roleService.isAdmin(req.user.login))
-            {
-                res.status(401).end()
-            }
-
             const users = await svc.dao.getAllUsers()
             if(users === undefined)
             {
@@ -308,68 +285,5 @@ module.exports = (app, svc, roleService, dirName, jwt) => {
         catch (e) {
             res.status(400).end()
         }
-    })
-
-    app.get("/useraccount/sub/all", jwt.validateJWT, async (req, res) => {
-        try
-        {
-            if(! await roleService.isAdmin(req.user.login))
-            {
-                res.status(401).end()
-            }
-
-            const users = await svc.dao.getSubUsers()
-            if(users === undefined)
-            {
-                res.status(404).end()
-            }
-
-            console.log("ici")
-
-            return res.json(users)
-        }
-        catch (e) {
-            res.status(400).end()
-        }
-    })
-
-    app.get("/useraccount/sub/:login", jwt.validateJWT, async (req, res) => {
-        try
-        {
-            if(! await roleService.isAdmin(req.user.login))
-            {
-                res.status(401).end()
-            }
-
-            const users = await svc.dao.getSubUsersLikeLogin(req.params.login)
-            if(users === undefined)
-            {
-                res.status(404).end()
-            }
-
-            return res.json(users)
-        }
-        catch (e) {
-            res.status(400).end()
-        }
-    })
-
-
-    app.post("/useraccount/payment", jwt.validateJWT, async (req, res) => {
-        const {iduser, title, price, date} = req.body
-
-        if(parseInt(iduser) !== req.user.id)
-        {
-            res.status(401).end()
-        }
-
-        svc.sendConfirmSubscribeEmail(req.user, title, price, date)
-
-        paymentService.dao.insert(iduser, title, price, date)
-            .then(res.status(200).end())
-            .catch(e => {
-                console.log(e)
-                res.status(500).end()
-            })
     })
 }

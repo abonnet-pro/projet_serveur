@@ -28,7 +28,7 @@ module.exports = class UserAccountService
 
     insert(displayname, login, password)
     {
-        return this.dao.insert(new UserAccount(displayname, login, this.hashPassword(password), false, null, null))
+        return this.dao.insert(new UserAccount(displayname, login, this.hashPassword(password), "EMPLOYE", false))
     }
 
     async update(user)
@@ -64,7 +64,7 @@ module.exports = class UserAccountService
     async isActive(login)
     {
         const user = await this.dao.getByLogin(login)
-        if (user.active === true && user.confirmation === null) return true
+        if (user.active === true) return true
         return false
     }
 
