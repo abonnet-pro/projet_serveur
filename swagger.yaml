@@ -1,0 +1,40 @@
+swagger: "2.0"
+
+info:
+  version: 1.0.0
+  title: ABONNEMENTS API
+  description: L'API permettant de gerer les abonnements clients
+
+schemes:
+  - https
+host: localhost:3332
+basePath: /
+
+paths:
+  /employe:
+    post:
+      summary: Créer un nouvel employé.
+
+      parameters:
+        - in: body
+          name: employeInformations
+          required: true
+          schema:
+            $ref: '#/definitions/employeInformations'
+
+      responses:
+        200:
+          description: Employé créé
+        500:
+          description: Erreur, voir descriptif de l'erreur
+
+definitions:
+  employeInformations:
+    type: object
+    properties:
+      displayname:
+        type: string
+      login:
+        type: string
+      password:
+        type: string
