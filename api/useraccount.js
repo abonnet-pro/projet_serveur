@@ -1,6 +1,6 @@
 module.exports = (app, svc, dirName, jwt) => {
 
-    app.post('/employe/create', async (req, res) => {
+    app.post('/employe', async (req, res) => {
         const useraccount = req.body
 
         if(!svc.isValid(useraccount))
