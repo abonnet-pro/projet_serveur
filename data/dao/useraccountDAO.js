@@ -1,4 +1,4 @@
-const BaseDAO = require('./basedao')
+const BaseDAO = require('./baseDAO')
 
 module.exports = class UserAccountDAO extends BaseDAO
 {
@@ -10,8 +10,8 @@ module.exports = class UserAccountDAO extends BaseDAO
     insert(useraccount)
     {
         return new Promise((resolve, reject) =>
-            this.db.query("INSERT INTO useraccount(displayname, login, challenge, role, active) VALUES ($1,$2,$3,$4,$5) RETURNING ID",
-            [useraccount.displayName, useraccount.login, useraccount.challenge, useraccount.role, useraccount.active])
+            this.db.query("INSERT INTO useraccount(nom, prenom, login, challenge, role, active) VALUES ($1,$2,$3,$4,$5,$6) RETURNING ID",
+            [useraccount.nom, useraccount.prenom, useraccount.login, useraccount.challenge, useraccount.role, useraccount.active])
                 .then(res => resolve(res.rows[0].id) )
                 .catch(e => reject(e)))
     }

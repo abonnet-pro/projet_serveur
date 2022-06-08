@@ -49,12 +49,53 @@ paths:
         500:
           description: Erreur, voir descriptif de l'erreur
 
+  /client:
+    post:
+      summary: Créer un nouveau client.
+      tags:
+        - Client
+      parameters:
+        - in: body
+          name: clientInformations
+          required: true
+          schema:
+            $ref: '#/definitions/clientCreation'
+
+      responses:
+        200:
+          description: Client créé
+        500:
+          description: Erreur, voir descriptif de l'erreur
+
+  /client/authenticate:
+    post:
+      summary: Authentifie un client.
+      tags:
+        - Client
+      parameters:
+        - in: body
+          name: clientAuthentification
+          required: true
+          schema:
+            $ref: '#/definitions/client'
+
+      responses:
+        200:
+          description: Employé authentifié
+          schema:
+            $ref: '#/definitions/employe'
+        500:
+          description: Erreur, voir descriptif de l'erreur
+
+
 
 definitions:
   employeCreation:
     type: object
     properties:
-      displayname:
+      nom:
+        type: string
+      prenom:
         type: string
       login:
         type: string
@@ -72,11 +113,79 @@ definitions:
   employe:
     type: object
     properties:
-      displayname:
+      nom:
+        type: string
+      prenom:
         type: string
       login:
         type: string
       role:
         type: string
       token:
+        type: string
+
+  clientCreation:
+    type: object
+    properties:
+      nom:
+        type: string
+      prenom:
+        type: string
+      displayName:
+        type: string
+      login:
+        type: string
+        format: email
+      dateNaissance:
+        type: string
+        pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4})/
+        example: "14-01-1993"
+      lieuNaissance:
+        type: string
+      rue:
+        type: string
+      cp:
+        type: string
+      ville:
+        type: string
+      password:
+        type: string
+
+  client:
+    type: object
+    properties:
+      id:
+        type: integer
+      nom:
+        type: string
+      prenom:
+        type: string
+      displayName:
+        type: string
+      login:
+        type: string
+        format: email
+      dateNaissance:
+        type: string
+        pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4})/
+        example: "14-01-1993"
+      lieuNaissance:
+        type: string
+      rue:
+        type: string
+      cp:
+        type: string
+      ville:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+
+  clientAuthentification:
+    type: object
+    properties:
+      login:
+        type: string
+      password:
         type: string

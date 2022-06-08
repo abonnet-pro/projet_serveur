@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const nodemailer = require("nodemailer")
-const UserAccountDAO = require('../data/dao/useraccountdao')
+const UserAccountDAO = require('../data/dao/useraccountDAO')
 const UserAccount = require('../data/model/useraccount')
 const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -13,8 +13,9 @@ module.exports = class UserAccountService
 
     isValid(useraccount)
     {
-        useraccount.displayname = useraccount.displayname.trim()
-        if (useraccount.displayname === "") return false
+        useraccount.nom = useraccount.nom.trim()
+        useraccount.prenom = useraccount.prenom.trim()
+        if (useraccount.prenom === "") return false
         if(useraccount.login == null) return false
         return useraccount.password != null;
 
@@ -26,9 +27,20 @@ module.exports = class UserAccountService
         return (user === undefined)
     }
 
-    insert(displayname, login, password)
+    insert(nom, prenom, login, password)
     {
-        return this.dao.insert(new UserAccount(displayname, login, this.hashPassword(password), "EMPLOYE", false))
+        return this.dao.insert(new UserAccount(nom, prenom, login, this.hashPassword(password), "EMPLOYE", false))
+    }
+
+    isPwdValid(password)
+    {
+        if(password.match(new RegExp("[A-Z]")) &&
+            password.match(new RegExp("[a-z]")) &&
+            password.match(new RegExp("[0-9]")) &&
+            password.match(new RegExp("[`~!:;@#$%^&*]"))) {
+            return true
+        }
+        return false
     }
 
     async update(user)

@@ -13,7 +13,12 @@ module.exports = (app, svc, dirName, jwt) => {
             return res.status(500).send("Login déjà utilisé")
         }
 
-        svc.insert(useraccount.displayname, useraccount.login, useraccount.password)
+        if(!svc.isPwdValid(useraccount.password))
+        {
+            return res.status(500).send("Le mot de passe ne respecte pas les consignes de securité")
+        }
+
+        svc.insert(useraccount.nom, useraccount.prenom, useraccount.login, useraccount.password)
             .then(res.status(200).end())
             .catch(e => {
                 console.log(e)
@@ -40,7 +45,8 @@ module.exports = (app, svc, dirName, jwt) => {
 
                 const user = await svc.dao.getByLogin(login)
                 const userDTO = {
-                    displayname: user.displayname,
+                    nom: user.nom,
+                    prenom: user.prenom,
                     login: user.login,
                     role: user.role,
                     token: jwt.generateJWT(login)
