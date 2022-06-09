@@ -5,17 +5,17 @@ module.exports = (app, clientService, dirName, jwt) => {
 
         if(!clientService.isValid(client))
         {
-            return res.status(500).send("Informations invalides")
+            return res.status(400).send("Informations invalides")
         }
 
         if(!await clientService.isLoginValid(client.login))
         {
-            return res.status(500).send("Login déjà utilisé")
+            return res.status(400).send("Login déjà utilisé")
         }
 
         if(!clientService.isPwdValid(client.password))
         {
-            return res.status(500).send("Le mot de passe ne respecte pas les consignes de securité")
+            return res.status(400).send("Le mot de passe ne respecte pas les consignes de securité")
         }
 
         clientService.insert(client.nom, client.prenom, client.displayName, client.login, client.dateNaissance, client.lieuNaissance, client.rue, client.cp, client.ville, client.password)
@@ -30,17 +30,17 @@ module.exports = (app, clientService, dirName, jwt) => {
         const { login, password } = req.body
 
         if ((login === undefined) || (password === undefined)) {
-            return res.status(500).send("Informations invalides")
+            return res.status(400).send("Informations invalides")
         }
 
         clientService.validatePassword(login, password)
             .then(async authenticated => {
                 if(!authenticated) {
-                    return res.status(500).send("Couple email / mot de passe invalide")
+                    return res.status(400).send("Couple email / mot de passe invalide")
                 }
 
                 if (!await clientService.isActive(login)) {
-                    return res.status(500).send("Compte suspendu")
+                    return res.status(400).send("Compte suspendu")
                 }
 
                 const client = await clientService.dao.getByLogin(login)

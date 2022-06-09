@@ -34,7 +34,7 @@ const role = require('./utils/role')()
 require('./api/useraccount')(app, userAccountService, dirName, jwt)
 require('./api/publication')(app, publicationService, role, dirName, jwt)
 require('./api/client')(app, clientService, dirName, jwt)
-require('./data/seeder')(userAccountService, clientService)
+require('./data/seeder')(userAccountService, clientService, publicationService)
     .then(_ => app.listen(3332))
 
 

@@ -26,7 +26,7 @@ paths:
       responses:
         200:
           description: Employé créé
-        500:
+        400:
           description: Erreur, voir descriptif de l'erreur
 
   /employe/authenticate:
@@ -46,7 +46,7 @@ paths:
           description: Employé authentifié
           schema:
             $ref: '#/definitions/employe'
-        500:
+        400:
           description: Erreur, voir descriptif de l'erreur
 
   /client:
@@ -64,7 +64,7 @@ paths:
       responses:
         200:
           description: Client créé
-        500:
+        400:
           description: Erreur, voir descriptif de l'erreur
 
   /client/authenticate:
@@ -84,7 +84,7 @@ paths:
           description: Employé authentifié
           schema:
             $ref: '#/definitions/employe'
-        500:
+        400:
           description: Erreur, voir descriptif de l'erreur
 
   /upload:
@@ -108,11 +108,53 @@ paths:
             properties:
               imgUpload:
                 type: string
-        500:
+        400:
           description: Erreur, voir descriptif de l'erreur
         401:
           description: Accès non autorisé
 
+  /publication:
+    post:
+      summary: Créer une nouvelle publication.
+      tags:
+        - Publication
+      parameters:
+        - in: body
+          name: publicationInformations
+          required: true
+          schema:
+            $ref: '#/definitions/publicationInformations'
+
+      responses:
+        200:
+          description: Puublication créé
+          schema:
+            $ref: '#/definitions/publication'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
+  /publication/{id}:
+    patch:
+      summary: Modifie une publication.
+      tags:
+        - Publication
+      parameters:
+        - in: body
+          name: publicationInformations
+          schema:
+            $ref: '#/definitions/publicationInformations'
+
+      responses:
+        200:
+          description: Puublication Modifié
+          schema:
+            $ref: '#/definitions/publication'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
 
 definitions:
   employeCreation:
@@ -214,3 +256,33 @@ definitions:
         type: string
       password:
         type: string
+
+  publicationInformations:
+    type: object
+    properties:
+      titre:
+        type: string
+      description:
+        type: string
+      nbrNumeroAnnee:
+        type: number
+      photoCouverture:
+        type: string
+      prixAnnuel:
+        type: number
+
+  publication:
+    type: object
+    properties:
+      id:
+        type: number
+      titre:
+        type: string
+      description:
+        type: string
+      nbrNumeroAnnee:
+        type: number
+      photoCouverture:
+        type: string
+      prixAnnuel:
+        type: number

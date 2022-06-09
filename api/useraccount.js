@@ -5,17 +5,17 @@ module.exports = (app, svc, dirName, jwt) => {
 
         if(!svc.isValid(useraccount))
         {
-            return res.status(500).send("Informations invalides")
+            return res.status(400).send("Informations invalides")
         }
 
         if(!await svc.isLoginValid(useraccount.login))
         {
-            return res.status(500).send("Login déjà utilisé")
+            return res.status(400).send("Login déjà utilisé")
         }
 
         if(!svc.isPwdValid(useraccount.password))
         {
-            return res.status(500).send("Le mot de passe ne respecte pas les consignes de securité")
+            return res.status(400).send("Le mot de passe ne respecte pas les consignes de securité")
         }
 
         svc.insert(useraccount.nom, useraccount.prenom, useraccount.login, useraccount.password)
@@ -30,17 +30,17 @@ module.exports = (app, svc, dirName, jwt) => {
         const { login, password } = req.body
 
         if ((login === undefined) || (password === undefined)) {
-            return res.status(500).send("Informations invalides")
+            return res.status(400).send("Informations invalides")
         }
 
         svc.validatePassword(login, password)
             .then(async authenticated => {
                 if(!authenticated) {
-                    return res.status(500).send("Couple email / mot de passe invalide")
+                    return res.status(400).send("Couple email / mot de passe invalide")
                 }
 
                 if (!await svc.isActive(login)) {
-                    return res.status(500).send("Compte suspendu")
+                    return res.status(400).send("Compte suspendu")
                 }
 
                 const user = await svc.dao.getByLogin(login)

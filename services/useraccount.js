@@ -13,8 +13,8 @@ module.exports = class UserAccountService
 
     isValid(useraccount)
     {
-        useraccount.nom = useraccount.nom.trim()
-        useraccount.prenom = useraccount.prenom.trim()
+        useraccount.nom = useraccount.nom && useraccount.nom.trim()
+        useraccount.prenom = useraccount.prenom && useraccount.prenom.trim()
         if (useraccount.prenom === "") return false
         if(useraccount.login == null) return false
         return useraccount.password != null;

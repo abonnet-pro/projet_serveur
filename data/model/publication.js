@@ -1,11 +1,11 @@
 module.exports = class Publication
 {
-    constructor(titre, nbrNumeroAnnee, photoCourverture, description, prixAnnuel)
+    constructor(titre, nbrNumeroAnnee, photoCouverture, description, prixAnnuel)
     {
         this.id = null
         this.titre = titre
         this.nbrNumeroAnnee = nbrNumeroAnnee
-        this.photoCourverture = photoCourverture
+        this.photoCouverture = photoCouverture
         this.description = description
         this.prixAnnuel = prixAnnuel
     }

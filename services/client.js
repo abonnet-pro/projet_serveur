@@ -14,11 +14,11 @@ module.exports = class UserAccountService {
 
     isValid(client)
     {
-        client.nom = client.nom.trim()
-        client.prenom = client.prenom.trim()
-        client.lieuNaissance = client.lieuNaissance.trim()
-        client.rue = client.rue.trim()
-        client.ville = client.ville.trim()
+        client.nom = client.nom && client.nom.trim()
+        client.prenom = client.prenom && client.prenom.trim()
+        client.lieuNaissance = client.lieuNaissance && client.lieuNaissance.trim()
+        client.rue = client.rue && client.rue.trim()
+        client.ville = client.ville && client.ville.trim()
         if (client.prenom === "" || client.prenom === null) return false
         if (client.nom === "" || client.nom === null) return false
         if (client.lieuNaissance === "" || client.lieuNaissance === null) return false
