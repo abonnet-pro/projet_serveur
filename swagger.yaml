@@ -1,12 +1,9 @@
 swagger: "2.0"
 
 info:
+  title: API Abonnements
+  description: L'API permettant de gerer les abonnements clients.
   version: 1.0.0
-  title: ABONNEMENTS API
-  description: L'API permettant de gerer les abonnements clients
-
-schemes:
-  - https
 host: localhost:3332
 basePath: /
 
@@ -67,6 +64,32 @@ paths:
         400:
           description: Erreur, voir descriptif de l'erreur
 
+  /client/{id]:
+    patch:
+      summary: Modifie un client.
+      tags:
+        - Client
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id du client
+        - in: body
+          name: publicationInformations
+          schema:
+            $ref: '#/definitions/clientInformation'
+
+      responses:
+        200:
+          description: Client Modifié
+          schema:
+            $ref: '#/definitions/client'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
   /client/authenticate:
     post:
       summary: Authentifie un client.
@@ -102,7 +125,7 @@ paths:
 
       responses:
         200:
-          description: Employé authentifié
+          description: Image uploadé
           schema:
             type: object
             properties:
@@ -114,6 +137,20 @@ paths:
           description: Accès non autorisé
 
   /publication:
+    get:
+      summary: Récupère la liste des publications.
+      tags:
+        - Publication
+      responses:
+        200:
+          description: La liste des publications
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/publication'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+
     post:
       summary: Créer une nouvelle publication.
       tags:
@@ -136,11 +173,34 @@ paths:
           description: Accès non autorisé
 
   /publication/{id}:
+    get:
+      summary: Récupère une publication.
+      tags:
+        - Publication
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id de la publication
+      responses:
+        200:
+          description: Puublication renvoyé
+          schema:
+            $ref: '#/definitions/publication'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+
     patch:
       summary: Modifie une publication.
       tags:
         - Publication
       parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id de la publication
         - in: body
           name: publicationInformations
           schema:
@@ -155,6 +215,22 @@ paths:
           description: Erreur, voir descriptif de l'erreur
         401:
           description: Accès non autorisé
+
+    delete:
+      summary: Supprime une publication.
+      tags:
+        - Publication
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id de la publication
+      responses:
+        200:
+          description: Publication supprimé
+        400:
+          description: Erreur, voir descriptif de l'erreur
 
 definitions:
   employeCreation:
@@ -216,6 +292,31 @@ definitions:
       ville:
         type: string
       password:
+        type: string
+
+  clientInformation:
+    type: object
+    properties:
+      nom:
+        type: string
+      prenom:
+        type: string
+      displayName:
+        type: string
+      login:
+        type: string
+        format: email
+      dateNaissance:
+        type: string
+        pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4})/
+        example: "14-01-1993"
+      lieuNaissance:
+        type: string
+      rue:
+        type: string
+      cp:
+        type: string
+      ville:
         type: string
 
   client:

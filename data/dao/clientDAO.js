@@ -23,4 +23,10 @@ module.exports = class ClientDAO extends BaseDAO
                 .then(res => resolve(res.rows[0]) )
                 .catch(e => reject(e)))
     }
+
+    update(client)
+    {
+        return this.db.query("UPDATE client SET nom=$2, prenom=$3, displayName=$4, login=$5, dateNaissance=$6, lieuNaissance=$7, rue=$8, cp=$9, ville=$10 WHERE id=$1",
+            [client.id, client.nom, client.prenom, client.displayname, client.login, client.datenaissance, client.lieunaissance, client.rue, client.cp, client.ville])
+    }
 }

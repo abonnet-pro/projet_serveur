@@ -26,6 +26,33 @@ module.exports = (app, publicationService, role, dirName, jwt) => {
         }
     })
 
+    app.get('/publication', jwt.validateJWT, async (req, res) => {
+        try
+        {
+            const publications = await publicationService.dao.getAll()
+            if(publications === undefined) {
+                return res.status(404).end()
+            }
+            return res.json(publications)
+        } catch (e) {
+            res.status(400).end()
+        }
+    })
+
+    app.get('/publication/:id', jwt.validateJWT, async (req, res) => {
+        try
+        {
+            const publication = await publicationService.dao.getById(req.params.id)
+            if(publication === undefined) {
+                return res.status(400).send("Impossible de trouver la publication")
+            }
+
+            return res.json(publication)
+        } catch (e) {
+            res.status(400).end()
+        }
+    })
+
     app.post('/publication', jwt.validateJWT, role.employe, (req, res) => {
         const publication = req.body
         if(!publicationService.isValid(publication)) {
@@ -67,5 +94,25 @@ module.exports = (app, publicationService, role, dirName, jwt) => {
                 console.log(e)
                 res.status(500).end()
             })
+    })
+
+    app.delete("/publication/:id", jwt.validateJWT, role.employe, async (req, res) => {
+        try
+        {
+            const publication = await publicationService.dao.getById(req.params.id)
+            if (publication === undefined) {
+                return res.status(400).send("Impossible de trouver la publication")
+            }
+
+            publicationService.dao.delete(req.params.id)
+                .then(res.status(200).end())
+                .catch(e => {
+                    console.log(e)
+                    res.status(500).end()
+                })
+        } catch(e) {
+            console.log(e)
+            return res.status(400).end()
+        }
     })
 }
