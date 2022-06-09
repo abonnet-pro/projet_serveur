@@ -87,6 +87,31 @@ paths:
         500:
           description: Erreur, voir descriptif de l'erreur
 
+  /upload:
+    post:
+      summary: Upload une image au format png sur le serveur.
+      tags:
+        - Upload
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: image
+          type: file
+          description: Le fichier à upload.
+
+      responses:
+        200:
+          description: Employé authentifié
+          schema:
+            type: object
+            properties:
+              imgUpload:
+                type: string
+        500:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
 
 
 definitions:

@@ -1,6 +1,11 @@
-module.exports = (app, publicationService, upload, fs, path, dirName, jwt) => {
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer')
+const upload = multer({dest: 'asset/images/'})
 
-    app.post('/upload', upload.single('image'), async (req, res) => {
+module.exports = (app, publicationService, role, dirName, jwt) => {
+
+    app.post('/upload', jwt.validateJWT, role.employe, upload.single('image'), async (req, res) => {
         if (!req.file) {
             return res.status(500).send("Aucune image selectionné");
         }

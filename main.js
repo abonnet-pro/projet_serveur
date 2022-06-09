@@ -5,10 +5,6 @@ const cors = require('cors')
 const morgan = require('morgan')
 const swaggerUi = require('swagger-ui-express')
 const yaml = require('yamljs')
-const multer = require('multer')
-const upload = multer({dest: 'asset/images/'})
-const path = require('path');
-const fs = require('fs');
 
 const UserAccountService = require("./services/useraccount")
 const PublicationService = require("./services/publication")
@@ -32,10 +28,11 @@ const userAccountService = new UserAccountService(db)
 const publicationService = new PublicationService(db)
 const clientService = new ClientService(db)
 
-const jwt = require('./jwt')(userAccountService)
+const jwt = require('./utils/jwt')(userAccountService, clientService)
+const role = require('./utils/role')()
 
 require('./api/useraccount')(app, userAccountService, dirName, jwt)
-require('./api/publication')(app, publicationService, upload, fs, path, dirName, jwt)
+require('./api/publication')(app, publicationService, role, dirName, jwt)
 require('./api/client')(app, clientService, dirName, jwt)
 require('./data/seeder')(userAccountService, clientService)
     .then(_ => app.listen(3332))
