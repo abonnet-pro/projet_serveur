@@ -371,6 +371,10 @@ definitions:
         type: string
       prixAnnuel:
         type: number
+      promotion:
+        type: boolean
+      pourcentagePromo:
+        type: number
 
   publication:
     type: object
@@ -389,3 +393,7 @@ definitions:
         type: number
       active:
         type: boolean
+      promotion:
+        type: boolean
+      pourcentagePromo:
+        type: number

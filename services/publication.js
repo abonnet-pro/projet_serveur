@@ -13,6 +13,7 @@ module.exports = class PublicationService {
         if(publication.description === null || publication.description === "" || publication.description === undefined) return false
         if(publication.nbrNumeroAnnee < 0 || publication.nbrNumeroAnnee === null || publication.nbrNumeroAnnee === undefined) return false
         if(publication.photoCouverture === null || publication.photoCouverture === "" || publication.photoCouverture === undefined) return false
+        if(publication.promotion === null || publication.promotion === undefined) return false
         return !(publication.prixAnnuel < 0 || publication.prixAnnuel === null || publication.prixAnnuel === undefined)
     }
 
@@ -22,5 +23,7 @@ module.exports = class PublicationService {
         if(newPublication.nbrNumeroAnnee) publication.nbrnumeroannee = newPublication.nbrNumeroAnnee
         if(newPublication.photoCouverture) publication.photocouverture = newPublication.photoCouverture
         if(newPublication.prixAnnuel) publication.prixannuel = newPublication.prixAnnuel
+        if(newPublication.promotion) publication.promotion = newPublication.promotion
+        if(newPublication.pourcentagePromo) publication.pourcentagepromo = newPublication.pourcentagePromo
     }
 }

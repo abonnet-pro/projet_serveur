@@ -1,6 +1,6 @@
 module.exports = class Publication
 {
-    constructor(titre, nbrNumeroAnnee, photoCouverture, description, prixAnnuel)
+    constructor(titre, nbrNumeroAnnee, photoCouverture, description, prixAnnuel, promotion, pourcentagePromo)
     {
         this.id = null
         this.titre = titre
@@ -8,5 +8,7 @@ module.exports = class Publication
         this.photoCouverture = photoCouverture
         this.description = description
         this.prixAnnuel = prixAnnuel
+        this.promotion = promotion
+        this.pourcentagePromo = pourcentagePromo
     }
 }
