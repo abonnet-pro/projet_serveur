@@ -71,6 +71,10 @@ module.exports = (app, clientService, dirName, jwt) => {
             return res.status(400).send("Impossible de trouver le client")
         }
 
+        if(!clientService.canAccess(req.user, client)) {
+            return res.status(401).end()
+        }
+
         if(!clientService.isValidEmail(req.body.login)) {
             return res.status(400).send("Email invalide")
         }

@@ -64,7 +64,7 @@ paths:
         400:
           description: Erreur, voir descriptif de l'erreur
 
-  /client/{id]:
+  /client/{id}:
     patch:
       summary: Modifie un client.
       tags:
@@ -387,3 +387,5 @@ definitions:
         type: string
       prixAnnuel:
         type: number
+      active:
+        type: boolean

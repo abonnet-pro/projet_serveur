@@ -9,6 +9,7 @@ const yaml = require('yamljs')
 const UserAccountService = require("./services/useraccount")
 const PublicationService = require("./services/publication")
 const ClientService = require("./services/client")
+const AbonnementService = require("./services/abonnement")
 const swaggerDocument = yaml.load('./swagger.yaml');
 
 const app = express()
@@ -27,6 +28,7 @@ const dirName = __dirname
 const userAccountService = new UserAccountService(db)
 const publicationService = new PublicationService(db)
 const clientService = new ClientService(db)
+const abonnementService = new AbonnementService(db)
 
 const jwt = require('./utils/jwt')(userAccountService, clientService)
 const role = require('./utils/role')()
@@ -34,7 +36,8 @@ const role = require('./utils/role')()
 require('./api/useraccount')(app, userAccountService, dirName, jwt)
 require('./api/publication')(app, publicationService, role, dirName, jwt)
 require('./api/client')(app, clientService, dirName, jwt)
-require('./data/seeder')(userAccountService, clientService, publicationService)
+require('./api/abonnement')(app, abonnementService, dirName, jwt)
+require('./data/seeder')(userAccountService, clientService, publicationService, abonnementService)
     .then(_ => app.listen(3332))
 
 

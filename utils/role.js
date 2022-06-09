@@ -5,6 +5,6 @@ module.exports = () => {
                 return res.status(401).end()
             }
             return next()
-        }
+        },
     }
 }

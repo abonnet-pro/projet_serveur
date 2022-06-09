@@ -793,11 +793,12 @@ false Zulu
     <database id="3" parent="1" name="abonnements">
       <ObjectId>29201</ObjectId>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>13934</IntrospectionStateNumber>
+      <IntrospectionStateNumber>14002</IntrospectionStateNumber>
       <Current>1</Current>
-      <Relations>sequence|table|29723|29725|1
-sequence|table|29734|29736|1
-sequence|table|29745|29747|1
+      <Relations>sequence|table|29808|29810|1
+sequence|table|29819|29821|1
+sequence|table|29830|29832|1
+sequence|table|29842|29844|1
 </Relations>
     </database>
     <database id="4" parent="1" name="base1">
@@ -874,7 +875,7 @@ sequence|table|29745|29747|1
       <Comment>standard public schema</Comment>
       <StateNumber>287</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>13935</IntrospectionStateNumber>
+      <IntrospectionStateNumber>14003</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="22" parent="3" name="heap">
@@ -944,262 +945,381 @@ sequence|table|29745|29747|1
     <language id="31" parent="3" name="internal"/>
     <language id="32" parent="3" name="plpgsql"/>
     <language id="33" parent="3" name="sql"/>
-    <sequence id="34" parent="21" name="client_id_seq">
-      <ObjectId>29734</ObjectId>
+    <sequence id="34" parent="21" name="abonnement_id_seq">
+      <ObjectId>29842</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>13928</StateNumber>
+      <StateNumber>13999</StateNumber>
       <DataType>integer|0s</DataType>
     </sequence>
-    <sequence id="35" parent="21" name="publication_id_seq">
-      <ObjectId>29745</ObjectId>
+    <sequence id="35" parent="21" name="client_id_seq">
+      <ObjectId>29819</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>13929</StateNumber>
+      <StateNumber>13997</StateNumber>
       <DataType>integer|0s</DataType>
     </sequence>
-    <sequence id="36" parent="21" name="useraccount_id_seq">
-      <ObjectId>29723</ObjectId>
+    <sequence id="36" parent="21" name="publication_id_seq">
+      <ObjectId>29830</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>13927</StateNumber>
+      <StateNumber>13998</StateNumber>
       <DataType>integer|0s</DataType>
     </sequence>
-    <table id="37" parent="21" name="client">
-      <ObjectId>29736</ObjectId>
+    <sequence id="37" parent="21" name="useraccount_id_seq">
+      <ObjectId>29808</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>13928</StateNumber>
-    </table>
-    <table id="38" parent="21" name="publication">
-      <ObjectId>29747</ObjectId>
+      <StateNumber>13996</StateNumber>
+      <DataType>integer|0s</DataType>
+    </sequence>
+    <table id="38" parent="21" name="abonnement">
+      <ObjectId>29844</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>13929</StateNumber>
+      <StateNumber>13999</StateNumber>
     </table>
-    <table id="39" parent="21" name="useraccount">
-      <ObjectId>29725</ObjectId>
+    <table id="39" parent="21" name="client">
+      <ObjectId>29821</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>13927</StateNumber>
+      <StateNumber>13999</StateNumber>
     </table>
-    <column id="40" parent="37" name="id">
+    <table id="40" parent="21" name="publication">
+      <ObjectId>29832</ObjectId>
+      <Owner>user1</Owner>
+      <StateNumber>13999</StateNumber>
+    </table>
+    <table id="41" parent="21" name="useraccount">
+      <ObjectId>29810</ObjectId>
+      <Owner>user1</Owner>
+      <StateNumber>13996</StateNumber>
+    </table>
+    <column id="42" parent="38" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <DefaultExpression>nextval(&apos;client_id_seq&apos;::regclass)</DefaultExpression>
+      <StateNumber>13999</StateNumber>
+      <DefaultExpression>nextval(&apos;abonnement_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="41" parent="37" name="nom">
+    <column id="43" parent="38" name="clientid">
       <Position>2</Position>
-      <DataType>text|0s</DataType>
+      <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
+      <StateNumber>13999</StateNumber>
+      <TypeId>23</TypeId>
     </column>
-    <column id="42" parent="37" name="prenom">
+    <column id="44" parent="38" name="publicationid">
       <Position>3</Position>
-      <DataType>text|0s</DataType>
+      <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
+      <StateNumber>13999</StateNumber>
+      <TypeId>23</TypeId>
     </column>
-    <column id="43" parent="37" name="displayname">
+    <column id="45" parent="38" name="datedebut">
       <Position>4</Position>
-      <DataType>text|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
-    </column>
-    <column id="44" parent="37" name="login">
-      <Position>5</Position>
-      <DataType>text|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
-    </column>
-    <column id="45" parent="37" name="datenaissance">
-      <Position>6</Position>
       <DataType>date|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
+      <StateNumber>13999</StateNumber>
       <TypeId>1082</TypeId>
     </column>
-    <column id="46" parent="37" name="lieunaissance">
-      <Position>7</Position>
-      <DataType>text|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
+    <column id="46" parent="38" name="datefin">
+      <Position>5</Position>
+      <DataType>date|0s</DataType>
+      <StateNumber>13999</StateNumber>
+      <TypeId>1082</TypeId>
     </column>
-    <column id="47" parent="37" name="rue">
-      <Position>8</Position>
-      <DataType>text|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
-    </column>
-    <column id="48" parent="37" name="cp">
-      <Position>9</Position>
-      <DataType>text|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
-    </column>
-    <column id="49" parent="37" name="ville">
-      <Position>10</Position>
-      <DataType>text|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
-    </column>
-    <column id="50" parent="37" name="challenge">
-      <Position>11</Position>
-      <DataType>text|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
-    </column>
-    <column id="51" parent="37" name="role">
-      <Position>12</Position>
-      <DataType>text|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
-      <TypeId>25</TypeId>
-    </column>
-    <column id="52" parent="37" name="active">
-      <Position>13</Position>
+    <column id="47" parent="38" name="actif">
+      <Position>6</Position>
       <DataType>boolean|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13928</StateNumber>
+      <StateNumber>13999</StateNumber>
       <TypeId>16</TypeId>
     </column>
-    <index id="53" parent="37" name="client_pkey">
-      <ObjectId>29743</ObjectId>
-      <StateNumber>13928</StateNumber>
+    <column id="48" parent="38" name="paye">
+      <Position>7</Position>
+      <DataType>boolean|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13999</StateNumber>
+      <TypeId>16</TypeId>
+    </column>
+    <column id="49" parent="38" name="montantpaye">
+      <Position>8</Position>
+      <DataType>real|0s</DataType>
+      <StateNumber>13999</StateNumber>
+      <TypeId>700</TypeId>
+    </column>
+    <column id="50" parent="38" name="dateresiliation">
+      <Position>9</Position>
+      <DataType>date|0s</DataType>
+      <StateNumber>13999</StateNumber>
+      <TypeId>1082</TypeId>
+    </column>
+    <column id="51" parent="38" name="montantrembourse">
+      <Position>10</Position>
+      <DataType>real|0s</DataType>
+      <StateNumber>13999</StateNumber>
+      <TypeId>700</TypeId>
+    </column>
+    <index id="52" parent="38" name="abonnement_pkey">
+      <ObjectId>29848</ObjectId>
+      <StateNumber>13999</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="54" parent="37" name="client_pkey">
-      <ObjectId>29744</ObjectId>
-      <StateNumber>13928</StateNumber>
+    <key id="53" parent="38" name="abonnement_pkey">
+      <ObjectId>29849</ObjectId>
+      <StateNumber>13999</StateNumber>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>abonnement_pkey</UnderlyingIndexName>
+    </key>
+    <foreign-key id="54" parent="38" name="abonnement_clientid_fkey">
+      <ObjectId>29850</ObjectId>
+      <StateNumber>13999</StateNumber>
+      <ColNames>clientid</ColNames>
+      <RefTableId>29821</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>client</RefTableName>
+      <RefKeyName>client_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="55" parent="38" name="abonnement_publicationid_fkey">
+      <ObjectId>29855</ObjectId>
+      <StateNumber>13999</StateNumber>
+      <ColNames>publicationid</ColNames>
+      <RefTableId>29832</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>publication</RefTableName>
+      <RefKeyName>publication_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="56" parent="39" name="id">
+      <Position>1</Position>
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <DefaultExpression>nextval(&apos;client_id_seq&apos;::regclass)</DefaultExpression>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="57" parent="39" name="nom">
+      <Position>2</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="58" parent="39" name="prenom">
+      <Position>3</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="59" parent="39" name="displayname">
+      <Position>4</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="60" parent="39" name="login">
+      <Position>5</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="61" parent="39" name="datenaissance">
+      <Position>6</Position>
+      <DataType>date|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>1082</TypeId>
+    </column>
+    <column id="62" parent="39" name="lieunaissance">
+      <Position>7</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="63" parent="39" name="rue">
+      <Position>8</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="64" parent="39" name="cp">
+      <Position>9</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="65" parent="39" name="ville">
+      <Position>10</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="66" parent="39" name="challenge">
+      <Position>11</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="67" parent="39" name="role">
+      <Position>12</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="68" parent="39" name="active">
+      <Position>13</Position>
+      <DataType>boolean|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13997</StateNumber>
+      <TypeId>16</TypeId>
+    </column>
+    <index id="69" parent="39" name="client_pkey">
+      <ObjectId>29828</ObjectId>
+      <StateNumber>13997</StateNumber>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Primary>1</Primary>
+    </index>
+    <key id="70" parent="39" name="client_pkey">
+      <ObjectId>29829</ObjectId>
+      <StateNumber>13997</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>client_pkey</UnderlyingIndexName>
     </key>
-    <column id="55" parent="38" name="id">
+    <column id="71" parent="40" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13929</StateNumber>
+      <StateNumber>13998</StateNumber>
       <DefaultExpression>nextval(&apos;publication_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="56" parent="38" name="titre">
+    <column id="72" parent="40" name="titre">
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13929</StateNumber>
+      <StateNumber>13998</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="57" parent="38" name="nbrnumeroannee">
+    <column id="73" parent="40" name="nbrnumeroannee">
       <Position>3</Position>
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13929</StateNumber>
+      <StateNumber>13998</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="58" parent="38" name="photocouverture">
+    <column id="74" parent="40" name="photocouverture">
       <Position>4</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13929</StateNumber>
+      <StateNumber>13998</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="59" parent="38" name="description">
+    <column id="75" parent="40" name="description">
       <Position>5</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13929</StateNumber>
+      <StateNumber>13998</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="60" parent="38" name="prixannuel">
+    <column id="76" parent="40" name="prixannuel">
       <Position>6</Position>
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13929</StateNumber>
+      <StateNumber>13998</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <index id="61" parent="38" name="publication_pkey">
-      <ObjectId>29754</ObjectId>
-      <StateNumber>13929</StateNumber>
+    <column id="77" parent="40" name="active">
+      <Position>7</Position>
+      <DataType>boolean|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>13998</StateNumber>
+      <DefaultExpression>true</DefaultExpression>
+      <TypeId>16</TypeId>
+    </column>
+    <index id="78" parent="40" name="publication_pkey">
+      <ObjectId>29840</ObjectId>
+      <StateNumber>13998</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="62" parent="38" name="publication_pkey">
-      <ObjectId>29755</ObjectId>
-      <StateNumber>13929</StateNumber>
+    <key id="79" parent="40" name="publication_pkey">
+      <ObjectId>29841</ObjectId>
+      <StateNumber>13998</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>publication_pkey</UnderlyingIndexName>
     </key>
-    <column id="63" parent="39" name="id">
+    <column id="80" parent="41" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13927</StateNumber>
+      <StateNumber>13996</StateNumber>
       <DefaultExpression>nextval(&apos;useraccount_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="64" parent="39" name="nom">
+    <column id="81" parent="41" name="nom">
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13927</StateNumber>
+      <StateNumber>13996</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="65" parent="39" name="prenom">
+    <column id="82" parent="41" name="prenom">
       <Position>3</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13927</StateNumber>
+      <StateNumber>13996</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="66" parent="39" name="login">
+    <column id="83" parent="41" name="login">
       <Position>4</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13927</StateNumber>
+      <StateNumber>13996</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="67" parent="39" name="challenge">
+    <column id="84" parent="41" name="challenge">
       <Position>5</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13927</StateNumber>
+      <StateNumber>13996</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="68" parent="39" name="role">
+    <column id="85" parent="41" name="role">
       <Position>6</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13927</StateNumber>
+      <StateNumber>13996</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="69" parent="39" name="active">
+    <column id="86" parent="41" name="active">
       <Position>7</Position>
       <DataType>boolean|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>13927</StateNumber>
+      <StateNumber>13996</StateNumber>
       <TypeId>16</TypeId>
     </column>
-    <index id="70" parent="39" name="useraccount_pkey">
-      <ObjectId>29732</ObjectId>
-      <StateNumber>13927</StateNumber>
+    <index id="87" parent="41" name="useraccount_pkey">
+      <ObjectId>29817</ObjectId>
+      <StateNumber>13996</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="71" parent="39" name="useraccount_pkey">
-      <ObjectId>29733</ObjectId>
-      <StateNumber>13927</StateNumber>
+    <key id="88" parent="41" name="useraccount_pkey">
+      <ObjectId>29818</ObjectId>
+      <StateNumber>13996</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>useraccount_pkey</UnderlyingIndexName>

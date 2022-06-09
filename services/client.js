@@ -91,4 +91,10 @@ module.exports = class UserAccountService {
         if(newClient.cp) client.cp = newClient.cp
         if(newClient.ville) client.ville = newClient.ville
     }
+
+    canAccess(me, client) {
+        if(me.role === 'CLIENT' && me.id !== client.id)
+            return false
+        return true
+    }
 }
