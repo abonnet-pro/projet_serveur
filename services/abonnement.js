@@ -22,4 +22,55 @@ module.exports = class AbonnementService {
             publication: publication,
         }
     }
+
+    async getAbonnementsDTO(abonnements, publicationService, clientService) {
+        let retour = []
+
+        for(let abonnement of abonnements) {
+            const publication = await publicationService.dao.getById(abonnement.publicationid)
+            const client = await clientService.dao.getById(abonnement.clientid)
+
+            Reflect.deleteProperty(abonnement, "clientid")
+            Reflect.deleteProperty(abonnement, "publicationid")
+            Reflect.deleteProperty(client, "challenge")
+
+            retour.push({
+                ...abonnement,
+                client: client,
+                publication: publication
+            })
+        }
+
+        return retour;
+    }
+
+    getAll(user, actif, paye) {
+        let where = '';
+
+        if(user.role === "CLIENT" || actif || paye) {
+            where += 'WHERE'
+        }
+
+        if(user.role === "CLIENT") {
+            where += ' clientid = ' + user.id
+        }
+
+        if(actif !== undefined) {
+            if(where === 'WHERE') {
+                where += ' actif = ' + actif
+            } else {
+                where += ' and actif = ' + actif
+            }
+        }
+
+        if(paye !== undefined) {
+            if(where === 'WHERE') {
+                where += ' paye = ' + paye
+            } else {
+                where += ' and paye = ' + paye
+            }
+        }
+
+        return this.dao.getAll(where)
+    }
 }

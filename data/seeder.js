@@ -12,7 +12,10 @@ module.exports = (userAccountService, clientService, publicationService, abonnem
 
             await userAccountService.dao.insert(new UserAccount("Employe 1", "EMPLOYE", "employe1@esimed.fr", userAccountService.hashPassword("employe"), "EMPLOYE", true, true))
             await userAccountService.dao.insert(new UserAccount("Admin", "ADMIN", "admin@esimed.fr", userAccountService.hashPassword("admin"), "ADMIN", true, false))
+
             await clientService.dao.insert(new Client("Client 1", "Client", "Client", "client1@client.fr", "14/01/1993", "Saint-Etienne", "2 rue rascas", "84000", "Avignon", userAccountService.hashPassword("client"), "CLIENT", true))
+            await clientService.dao.insert(new Client("Client 2", "Client", "Client", "client2@client.fr", "14/01/1993", "Saint-Etienne", "2 rue rascas", "84000", "Avignon", userAccountService.hashPassword("client"), "CLIENT", true))
+
             await publicationService.dao.insert(new Publication("France Promo", 12, "fe986c39ebe69725d4493c9f269994ed.png", "France football magazine", 99.99, true, 50))
             await publicationService.dao.insert(new Publication("Chicken", 12, "562089e4f4a84248783dd23a19b89d6f.png", "Chicken magazine", 54.99, false, null))
 

@@ -253,6 +253,46 @@ paths:
         401:
           description: Accès non autorisé
 
+  /abonnement:
+    get:
+      summary: Récupère la liste des abonnements du client si role client ou total si role employé.
+      tags:
+        - Abonnement
+      parameters:
+        - in: query
+          name: actif
+          type: boolean
+          required: false
+          description: Récupère la liste des abonnements en fonction de la donnée actif et du role
+        - in: query
+          name: paye
+          type: boolean
+          required: false
+          description: Récupère la liste des abonnements en fonction de la donnée paye et du role
+      responses:
+        200:
+          description: Liste d'abonnement renvoyé
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/abonnement'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+
+  /abonnement/{id}:
+    get:
+      summary: Récupère un abonnement.
+      tags:
+        - Abonnement
+      responses:
+        200:
+          description: Abonnement renvoyé
+          schema:
+            $ref: '#/definitions/abonnement'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
 
 definitions:
   employeCreation:
