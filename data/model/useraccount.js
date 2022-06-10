@@ -1,6 +1,6 @@
 module.exports = class UserAccount
 {
-    constructor(nom, prenom, login, challenge, role, active)
+    constructor(nom, prenom, login, challenge, role, active, premiereConnexion)
     {
         this.id = null
         this.nom = nom
@@ -9,5 +9,6 @@ module.exports = class UserAccount
         this.challenge = challenge
         this.role = role
         this.active = active
+        this.premiereConnexion = premiereConnexion
     }
 }

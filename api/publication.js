@@ -3,7 +3,7 @@ const fs = require('fs');
 const multer = require('multer')
 const upload = multer({dest: 'asset/images/'})
 
-module.exports = (app, publicationService, role, dirName, jwt) => {
+module.exports = (app, publicationService, abonnementService, role, dirName, jwt) => {
 
     app.post('/upload', jwt.validateJWT, role.employe, upload.single('image'), async (req, res) => {
         if (!req.file) {
@@ -26,7 +26,7 @@ module.exports = (app, publicationService, role, dirName, jwt) => {
         }
     })
 
-    app.get('/publication', jwt.validateJWT, async (req, res) => {
+    app.get('/publication', async (req, res) => {
         try
         {
             const publications = await publicationService.dao.getAll()
@@ -39,7 +39,7 @@ module.exports = (app, publicationService, role, dirName, jwt) => {
         }
     })
 
-    app.get('/publication/:id', jwt.validateJWT, async (req, res) => {
+    app.get('/publication/:id', async (req, res) => {
         try
         {
             const publication = await publicationService.dao.getById(req.params.id)
@@ -114,5 +114,32 @@ module.exports = (app, publicationService, role, dirName, jwt) => {
             console.log(e)
             return res.status(400).end()
         }
+    })
+
+    app.post('/publication/:id/abonnement', jwt.validateJWT, role.client, async (req, res) => {
+
+        const publication = await publicationService.dao.getById(req.params.id)
+        if(publication === undefined) {
+            return res.status(400).send("Impossible de trouver la publication")
+        }
+
+        const abonnement = await abonnementService.dao.getAbonnementByClientAndPublication(req.user.id, publication.id)
+        if(abonnement !== undefined) {
+            return res.status(400).send("Vous êtes déja abonné à cette publication")
+        }
+
+        abonnementService.newAbonnement(publication, req.user)
+            .then(abonnementId => {
+                abonnementService.dao.getById(abonnementId)
+                    .then(abonnement => res.json(abonnementService.getAbonnementDTO(abonnement, publication, req.user)))
+                    .catch(e => {
+                        console.log(e)
+                        res.status(500).end()
+                    })
+            })
+            .catch(e => {
+                console.log(e)
+                res.status(500).end()
+            })
     })
 }

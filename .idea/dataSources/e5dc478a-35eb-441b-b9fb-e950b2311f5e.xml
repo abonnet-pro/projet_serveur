@@ -793,12 +793,12 @@ false Zulu
     <database id="3" parent="1" name="abonnements">
       <ObjectId>29201</ObjectId>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>14064</IntrospectionStateNumber>
+      <IntrospectionStateNumber>14178</IntrospectionStateNumber>
       <Current>1</Current>
-      <Relations>sequence|table|29921|29923|1
-sequence|table|29932|29934|1
-sequence|table|29943|29945|1
-sequence|table|29956|29958|1
+      <Relations>sequence|table|30156|30158|1
+sequence|table|30168|30170|1
+sequence|table|30179|30181|1
+sequence|table|30192|30194|1
 </Relations>
     </database>
     <database id="4" parent="1" name="base1">
@@ -875,7 +875,7 @@ sequence|table|29956|29958|1
       <Comment>standard public schema</Comment>
       <StateNumber>287</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>14065</IntrospectionStateNumber>
+      <IntrospectionStateNumber>14179</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="22" parent="3" name="heap">
@@ -946,54 +946,54 @@ sequence|table|29956|29958|1
     <language id="32" parent="3" name="plpgsql"/>
     <language id="33" parent="3" name="sql"/>
     <sequence id="34" parent="21" name="abonnement_id_seq">
-      <ObjectId>29956</ObjectId>
+      <ObjectId>30192</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <DataType>integer|0s</DataType>
     </sequence>
     <sequence id="35" parent="21" name="client_id_seq">
-      <ObjectId>29932</ObjectId>
+      <ObjectId>30168</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <DataType>integer|0s</DataType>
     </sequence>
     <sequence id="36" parent="21" name="publication_id_seq">
-      <ObjectId>29943</ObjectId>
+      <ObjectId>30179</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <DataType>integer|0s</DataType>
     </sequence>
     <sequence id="37" parent="21" name="useraccount_id_seq">
-      <ObjectId>29921</ObjectId>
+      <ObjectId>30156</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>14056</StateNumber>
+      <StateNumber>14169</StateNumber>
       <DataType>integer|0s</DataType>
     </sequence>
     <table id="38" parent="21" name="abonnement">
-      <ObjectId>29958</ObjectId>
+      <ObjectId>30194</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
     </table>
     <table id="39" parent="21" name="client">
-      <ObjectId>29934</ObjectId>
+      <ObjectId>30170</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
     </table>
     <table id="40" parent="21" name="publication">
-      <ObjectId>29945</ObjectId>
+      <ObjectId>30181</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
     </table>
     <table id="41" parent="21" name="useraccount">
-      <ObjectId>29923</ObjectId>
+      <ObjectId>30158</ObjectId>
       <Owner>user1</Owner>
-      <StateNumber>14056</StateNumber>
+      <StateNumber>14169</StateNumber>
     </table>
     <column id="42" parent="38" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <DefaultExpression>nextval(&apos;abonnement_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
@@ -1001,89 +1001,89 @@ sequence|table|29956|29958|1
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="44" parent="38" name="publicationid">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="45" parent="38" name="datedebut">
       <Position>4</Position>
       <DataType>date|0s</DataType>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="46" parent="38" name="datefin">
       <Position>5</Position>
       <DataType>date|0s</DataType>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="47" parent="38" name="actif">
       <Position>6</Position>
       <DataType>boolean|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <TypeId>16</TypeId>
     </column>
     <column id="48" parent="38" name="paye">
       <Position>7</Position>
       <DataType>boolean|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <TypeId>16</TypeId>
     </column>
     <column id="49" parent="38" name="montantpaye">
       <Position>8</Position>
       <DataType>real|0s</DataType>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <TypeId>700</TypeId>
     </column>
     <column id="50" parent="38" name="dateresiliation">
       <Position>9</Position>
       <DataType>date|0s</DataType>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="51" parent="38" name="montantrembourse">
       <Position>10</Position>
       <DataType>real|0s</DataType>
-      <StateNumber>14059</StateNumber>
+      <StateNumber>14172</StateNumber>
       <TypeId>700</TypeId>
     </column>
     <index id="52" parent="38" name="abonnement_pkey">
-      <ObjectId>29962</ObjectId>
-      <StateNumber>14059</StateNumber>
+      <ObjectId>30198</ObjectId>
+      <StateNumber>14172</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <key id="53" parent="38" name="abonnement_pkey">
-      <ObjectId>29963</ObjectId>
-      <StateNumber>14059</StateNumber>
+      <ObjectId>30199</ObjectId>
+      <StateNumber>14172</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>abonnement_pkey</UnderlyingIndexName>
     </key>
     <foreign-key id="54" parent="38" name="abonnement_clientid_fkey">
-      <ObjectId>29964</ObjectId>
-      <StateNumber>14059</StateNumber>
+      <ObjectId>30200</ObjectId>
+      <StateNumber>14172</StateNumber>
       <ColNames>clientid</ColNames>
-      <RefTableId>29934</RefTableId>
+      <RefTableId>30170</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>client</RefTableName>
       <RefKeyName>client_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
     <foreign-key id="55" parent="38" name="abonnement_publicationid_fkey">
-      <ObjectId>29969</ObjectId>
-      <StateNumber>14059</StateNumber>
+      <ObjectId>30205</ObjectId>
+      <StateNumber>14172</StateNumber>
       <ColNames>publicationid</ColNames>
-      <RefTableId>29945</RefTableId>
+      <RefTableId>30181</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>publication</RefTableName>
       <RefKeyName>publication_pkey</RefKeyName>
@@ -1093,7 +1093,7 @@ sequence|table|29956|29958|1
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <DefaultExpression>nextval(&apos;client_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
@@ -1101,96 +1101,96 @@ sequence|table|29956|29958|1
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="58" parent="39" name="prenom">
       <Position>3</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="59" parent="39" name="displayname">
       <Position>4</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="60" parent="39" name="login">
       <Position>5</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="61" parent="39" name="datenaissance">
       <Position>6</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="62" parent="39" name="lieunaissance">
       <Position>7</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="63" parent="39" name="rue">
       <Position>8</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="64" parent="39" name="cp">
       <Position>9</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="65" parent="39" name="ville">
       <Position>10</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="66" parent="39" name="challenge">
       <Position>11</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="67" parent="39" name="role">
       <Position>12</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="68" parent="39" name="active">
       <Position>13</Position>
       <DataType>boolean|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14057</StateNumber>
+      <StateNumber>14170</StateNumber>
       <TypeId>16</TypeId>
     </column>
     <index id="69" parent="39" name="client_pkey">
-      <ObjectId>29941</ObjectId>
-      <StateNumber>14057</StateNumber>
+      <ObjectId>30177</ObjectId>
+      <StateNumber>14170</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <key id="70" parent="39" name="client_pkey">
-      <ObjectId>29942</ObjectId>
-      <StateNumber>14057</StateNumber>
+      <ObjectId>30178</ObjectId>
+      <StateNumber>14170</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>client_pkey</UnderlyingIndexName>
@@ -1199,7 +1199,7 @@ sequence|table|29956|29958|1
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <DefaultExpression>nextval(&apos;publication_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
@@ -1207,42 +1207,42 @@ sequence|table|29956|29958|1
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="73" parent="40" name="nbrnumeroannee">
       <Position>3</Position>
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <TypeId>21</TypeId>
     </column>
     <column id="74" parent="40" name="photocouverture">
       <Position>4</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="75" parent="40" name="description">
       <Position>5</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="76" parent="40" name="prixannuel">
       <Position>6</Position>
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <TypeId>700</TypeId>
     </column>
     <column id="77" parent="40" name="active">
       <Position>7</Position>
       <DataType>boolean|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <DefaultExpression>true</DefaultExpression>
       <TypeId>16</TypeId>
     </column>
@@ -1250,26 +1250,26 @@ sequence|table|29956|29958|1
       <Position>8</Position>
       <DataType>boolean|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <DefaultExpression>false</DefaultExpression>
       <TypeId>16</TypeId>
     </column>
     <column id="79" parent="40" name="pourcentagepromo">
       <Position>9</Position>
       <DataType>smallint|0s</DataType>
-      <StateNumber>14058</StateNumber>
+      <StateNumber>14171</StateNumber>
       <TypeId>21</TypeId>
     </column>
     <index id="80" parent="40" name="publication_pkey">
-      <ObjectId>29954</ObjectId>
-      <StateNumber>14058</StateNumber>
+      <ObjectId>30190</ObjectId>
+      <StateNumber>14171</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <key id="81" parent="40" name="publication_pkey">
-      <ObjectId>29955</ObjectId>
-      <StateNumber>14058</StateNumber>
+      <ObjectId>30191</ObjectId>
+      <StateNumber>14171</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>publication_pkey</UnderlyingIndexName>
@@ -1278,7 +1278,7 @@ sequence|table|29956|29958|1
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14056</StateNumber>
+      <StateNumber>14169</StateNumber>
       <DefaultExpression>nextval(&apos;useraccount_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
@@ -1286,54 +1286,62 @@ sequence|table|29956|29958|1
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14056</StateNumber>
+      <StateNumber>14169</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="84" parent="41" name="prenom">
       <Position>3</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14056</StateNumber>
+      <StateNumber>14169</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="85" parent="41" name="login">
       <Position>4</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14056</StateNumber>
+      <StateNumber>14169</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="86" parent="41" name="challenge">
       <Position>5</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14056</StateNumber>
+      <StateNumber>14169</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="87" parent="41" name="role">
       <Position>6</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14056</StateNumber>
+      <StateNumber>14169</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="88" parent="41" name="active">
       <Position>7</Position>
       <DataType>boolean|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>14056</StateNumber>
+      <StateNumber>14169</StateNumber>
       <TypeId>16</TypeId>
     </column>
-    <index id="89" parent="41" name="useraccount_pkey">
-      <ObjectId>29930</ObjectId>
-      <StateNumber>14056</StateNumber>
+    <column id="89" parent="41" name="premiereconnexion">
+      <Position>8</Position>
+      <DataType>boolean|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>14169</StateNumber>
+      <DefaultExpression>true</DefaultExpression>
+      <TypeId>16</TypeId>
+    </column>
+    <index id="90" parent="41" name="useraccount_pkey">
+      <ObjectId>30166</ObjectId>
+      <StateNumber>14169</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="90" parent="41" name="useraccount_pkey">
-      <ObjectId>29931</ObjectId>
-      <StateNumber>14056</StateNumber>
+    <key id="91" parent="41" name="useraccount_pkey">
+      <ObjectId>30167</ObjectId>
+      <StateNumber>14169</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>useraccount_pkey</UnderlyingIndexName>

@@ -232,6 +232,28 @@ paths:
         400:
           description: Erreur, voir descriptif de l'erreur
 
+  /publication/{id}/abonnement:
+    post:
+      summary: S'abonner à une publication.
+      tags:
+        - Publication
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id de la publication
+      responses:
+        200:
+          description: Abonnement renvoyé
+          schema:
+            $ref: '#/definitions/abonnement'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
+
 definitions:
   employeCreation:
     type: object
@@ -396,4 +418,34 @@ definitions:
       promotion:
         type: boolean
       pourcentagePromo:
+        type: number
+
+  abonnement:
+    type: object
+    properties:
+      publication:
+        $ref: '#/definitions/publication'
+      client:
+        $ref: '#/definitions/client'
+      id:
+        type: number
+      dateDebut:
+        type: string
+        pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4})/
+        example: "14-01-1993"
+      dateFin:
+        type: string
+        pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4})/
+        example: "14-01-1993"
+      actif:
+        type: boolean
+      paye:
+        type: boolean
+      montantPaye:
+        type: number
+      dateResiliation:
+        type: string
+        pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4})/
+        example: "14-01-1993"
+      montantRembourse:
         type: number

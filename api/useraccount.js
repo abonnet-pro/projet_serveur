@@ -1,20 +1,21 @@
-module.exports = (app, svc, dirName, jwt) => {
+module.exports = (app, svc, role, dirName, jwt) => {
 
-    app.post('/employe', async (req, res) => {
+    app.post('/employe', jwt.validateJWT, role.admin, async (req, res) => {
         const useraccount = req.body
 
-        if(!svc.isValid(useraccount))
-        {
+        if(!svc.isValid(useraccount)) {
             return res.status(400).send("Informations invalides")
         }
 
-        if(!await svc.isLoginValid(useraccount.login))
-        {
+        if(!await svc.isLoginValid(useraccount.login)) {
             return res.status(400).send("Login déjà utilisé")
         }
 
-        if(!svc.isPwdValid(useraccount.password))
-        {
+        if(!svc.isLoginAllowed(useraccount.login)) {
+            return res.status(400).send("Le login ne respecte pas les conditions d'inscriptions des employés (adresse @esimed)")
+        }
+
+        if(!svc.isPwdValid(useraccount.password)) {
             return res.status(400).send("Le mot de passe ne respecte pas les consignes de securité")
         }
 

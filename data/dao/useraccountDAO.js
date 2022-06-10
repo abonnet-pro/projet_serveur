@@ -10,8 +10,8 @@ module.exports = class UserAccountDAO extends BaseDAO
     insert(useraccount)
     {
         return new Promise((resolve, reject) =>
-            this.db.query("INSERT INTO useraccount(nom, prenom, login, challenge, role, active) VALUES ($1,$2,$3,$4,$5,$6) RETURNING ID",
-            [useraccount.nom, useraccount.prenom, useraccount.login, useraccount.challenge, useraccount.role, useraccount.active])
+            this.db.query("INSERT INTO useraccount(nom, prenom, login, challenge, role, active, premiereConnexion) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING ID",
+            [useraccount.nom, useraccount.prenom, useraccount.login, useraccount.challenge, useraccount.role, useraccount.active, useraccount.premiereConnexion])
                 .then(res => resolve(res.rows[0].id) )
                 .catch(e => reject(e)))
     }

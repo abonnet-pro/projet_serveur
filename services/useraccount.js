@@ -29,7 +29,7 @@ module.exports = class UserAccountService
 
     insert(nom, prenom, login, password)
     {
-        return this.dao.insert(new UserAccount(nom, prenom, login, this.hashPassword(password), "EMPLOYE", false))
+        return this.dao.insert(new UserAccount(nom, prenom, login, this.hashPassword(password), "EMPLOYE", false, true))
     }
 
     isPwdValid(password)
@@ -41,6 +41,10 @@ module.exports = class UserAccountService
             return true
         }
         return false
+    }
+
+    isLoginAllowed(login) {
+        return login.includes("@esimed.fr")
     }
 
     async update(user)

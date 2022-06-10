@@ -19,12 +19,15 @@ module.exports = class UserAccountService {
         client.lieuNaissance = client.lieuNaissance && client.lieuNaissance.trim()
         client.rue = client.rue && client.rue.trim()
         client.ville = client.ville && client.ville.trim()
-        if (client.prenom === "" || client.prenom === null) return false
-        if (client.nom === "" || client.nom === null) return false
-        if (client.lieuNaissance === "" || client.lieuNaissance === null) return false
-        if (client.rue === "" || client.rue === null) return false
-        if (client.ville === "" || client.ville === null) return false
-        if(client.login === null) return false
+        client.displayName = client.displayName && client.displayName.trim()
+        if(client.prenom === "" || client.prenom === null || client.prenom === undefined) return false
+        if(client.nom === "" || client.nom === null || client.nom === undefined) return false
+        if(client.displayName === "" || client.displayName === null || client.displayName === undefined) return false
+        if(client.lieuNaissance === "" || client.lieuNaissance === null || client.lieuNaissance === undefined) return false
+        if(client.rue === "" || client.rue === null || client.rue === undefined) return false
+        if(client.ville === "" || client.ville === null || client.ville === undefined) return false
+        if(client.cp === "" || client.cp === null || client.cp === undefined) return false
+        if(client.login === null || client.login === undefined) return false
         if(!client.login.match(new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))) return false
         if(client.dateNaissance == null) return false
         return client.password != null;
@@ -35,6 +38,10 @@ module.exports = class UserAccountService {
             return email.match(new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))
         }
         return true
+    }
+
+    isLoginAllowed(login) {
+        return !login.includes("@esimed.fr")
     }
 
     async isLoginValid(login)

@@ -11,6 +11,10 @@ module.exports = (app, clientService, dirName, jwt) => {
             return res.status(400).send("Login déjà utilisé")
         }
 
+        if(!clientService.isLoginAllowed(client.login)) {
+            return res.status(400).send("Ce type de login (...@esimed.fr) n'est pas autorisé à l'inscription")
+        }
+
         if(!clientService.isPwdValid(client.password))
         {
             return res.status(400).send("Le mot de passe ne respecte pas les consignes de securité")
