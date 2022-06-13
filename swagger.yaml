@@ -284,6 +284,33 @@ paths:
       summary: Récupère un abonnement.
       tags:
         - Abonnement
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id de l'abonnement
+      responses:
+        200:
+          description: Abonnement renvoyé
+          schema:
+            $ref: '#/definitions/abonnement'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
+  /abonnement/{id}/arreter:
+    post:
+      summary: Arrête un abonnement.
+      tags:
+        - Abonnement
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id de l'abonnement
       responses:
         200:
           description: Abonnement renvoyé

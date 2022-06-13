@@ -42,5 +42,3 @@ require('./api/abonnement')(app, abonnementService, publicationService, clientSe
 require('./api/paiement')(app, paiementService, dirName, jwt)
 require('./data/seeder')(userAccountService, clientService, publicationService, abonnementService, paiementService)
     .then(_ => app.listen(3332))
-
-
