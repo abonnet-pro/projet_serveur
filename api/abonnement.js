@@ -1,6 +1,6 @@
 module.exports = (app, abonnementService, publicationService, clientService, dirName, jwt) => {
 
-    app.get('/abonnement', jwt.validateJWT , async (req, res) => {
+    app.get('/api/abonnement', jwt.validateJWT , async (req, res) => {
         try
         {
             let abonnements;
@@ -20,7 +20,7 @@ module.exports = (app, abonnementService, publicationService, clientService, dir
         }
     })
 
-    app.get('/abonnement/:id', jwt.validateJWT , async (req, res) => {
+    app.get('/api/abonnement/:id', jwt.validateJWT , async (req, res) => {
         try
         {
             let abonnement = await abonnementService.dao.getById(req.params.id)
@@ -40,7 +40,7 @@ module.exports = (app, abonnementService, publicationService, clientService, dir
         }
     })
 
-    app.post('/abonnement/:id/arreter', jwt.validateJWT , async (req, res) => {
+    app.post('/api/abonnement/:id/arreter', jwt.validateJWT , async (req, res) => {
         try
         {
             let abonnement = await abonnementService.dao.getById(req.params.id)
@@ -78,7 +78,7 @@ module.exports = (app, abonnementService, publicationService, clientService, dir
         }
     })
 
-    app.post('/abonnement/:id/relancer', jwt.validateJWT , async (req, res) => {
+    app.post('/api/abonnement/:id/relancer', jwt.validateJWT , async (req, res) => {
         try
         {
             let abonnement = await abonnementService.dao.getById(req.params.id)

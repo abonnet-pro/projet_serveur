@@ -5,7 +5,7 @@ const upload = multer({dest: 'asset/images/'})
 
 module.exports = (app, publicationService, abonnementService, role, dirName, jwt) => {
 
-    app.post('/upload', jwt.validateJWT, role.employe, upload.single('image'), async (req, res) => {
+    app.post('/api/upload', jwt.validateJWT, role.employe, upload.single('image'), async (req, res) => {
         if (!req.file) {
             return res.status(400).send("Aucune image selectionné");
         }
@@ -26,7 +26,7 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
         }
     })
 
-    app.get('/publication', async (req, res) => {
+    app.get('/api/publication', async (req, res) => {
         try
         {
             const publications = await publicationService.dao.getAll()
@@ -39,7 +39,7 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
         }
     })
 
-    app.get('/publication/:id', async (req, res) => {
+    app.get('/api/publication/:id', async (req, res) => {
         try
         {
             const publication = await publicationService.dao.getById(req.params.id)
@@ -53,7 +53,7 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
         }
     })
 
-    app.post('/publication', jwt.validateJWT, role.employe, (req, res) => {
+    app.post('/api/publication', jwt.validateJWT, role.employe, (req, res) => {
         const publication = req.body
         if(!publicationService.isValid(publication)) {
             return res.status(400).send("Informations invalides")
@@ -74,7 +74,7 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
             })
     })
 
-    app.patch('/publication/:id', jwt.validateJWT, role.employe, async (req, res) => {
+    app.patch('/api/publication/:id', jwt.validateJWT, role.employe, async (req, res) => {
         const publication = await publicationService.dao.getById(req.params.id)
         if(!publication) {
             return res.status(400).send("Impossible de trouver la publication")
@@ -96,7 +96,7 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
             })
     })
 
-    app.delete("/publication/:id", jwt.validateJWT, role.employe, async (req, res) => {
+    app.delete("/api/publication/:id", jwt.validateJWT, role.employe, async (req, res) => {
         try
         {
             const publication = await publicationService.dao.getById(req.params.id)
@@ -116,7 +116,7 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
         }
     })
 
-    app.post('/publication/:id/abonnement', jwt.validateJWT, role.client, async (req, res) => {
+    app.post('/api/publication/:id/abonnement', jwt.validateJWT, role.client, async (req, res) => {
 
         const publication = await publicationService.dao.getById(req.params.id)
         if(publication === undefined) {

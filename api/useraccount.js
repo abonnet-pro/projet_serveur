@@ -1,6 +1,6 @@
 module.exports = (app, svc, role, dirName, jwt) => {
 
-    app.post('/employe', jwt.validateJWT, role.admin, async (req, res) => {
+    app.post('/api/employe', jwt.validateJWT, role.admin, async (req, res) => {
         const useraccount = req.body
 
         if(!svc.isValid(useraccount)) {
@@ -27,7 +27,7 @@ module.exports = (app, svc, role, dirName, jwt) => {
             })
     })
 
-    app.post('/employe/authenticate', (req, res) => {
+    app.post('/api/employe/authenticate', (req, res) => {
         const { login, password } = req.body
 
         if ((login === undefined) || (password === undefined)) {

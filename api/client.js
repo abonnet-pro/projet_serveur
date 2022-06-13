@@ -1,6 +1,6 @@
 module.exports = (app, clientService, dirName, jwt) => {
 
-    app.post('/client', async (req, res) => {
+    app.post('/api/client', async (req, res) => {
         const client = req.body
 
         if(!clientService.isValid(client)) {
@@ -28,7 +28,7 @@ module.exports = (app, clientService, dirName, jwt) => {
             })
     })
 
-    app.post('/client/authenticate', (req, res) => {
+    app.post('/api/client/authenticate', (req, res) => {
         const { login, password } = req.body
 
         if ((login === undefined) || (password === undefined)) {
@@ -69,7 +69,7 @@ module.exports = (app, clientService, dirName, jwt) => {
             })
     })
 
-    app.patch('/client/:id', jwt.validateJWT, async (req, res) => {
+    app.patch('/api/client/:id', jwt.validateJWT, async (req, res) => {
         const client = await clientService.dao.getById(req.params.id)
         if(!client) {
             return res.status(400).send("Impossible de trouver le client")
