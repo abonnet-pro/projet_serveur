@@ -7,7 +7,7 @@ module.exports = class AbonnementService {
     }
 
     newAbonnement(publication, client) {
-        let abonnement = new Abonnement(client.id, publication.id, null, null, false, false, null, null, null)
+        let abonnement = new Abonnement(client.id, publication.id, null, null, false, false, null)
         return this.dao.insert(abonnement)
     }
 
@@ -15,6 +15,7 @@ module.exports = class AbonnementService {
         Reflect.deleteProperty(client, "challenge")
         Reflect.deleteProperty(abonnement, "clientid")
         Reflect.deleteProperty(abonnement, "publicationid")
+        Reflect.deleteProperty(abonnement, "paiementid")
 
         return {
             ...abonnement,
@@ -32,6 +33,7 @@ module.exports = class AbonnementService {
 
             Reflect.deleteProperty(abonnement, "clientid")
             Reflect.deleteProperty(abonnement, "publicationid")
+            Reflect.deleteProperty(abonnement, "paiementid")
             Reflect.deleteProperty(client, "challenge")
 
             retour.push({

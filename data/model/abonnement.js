@@ -1,6 +1,6 @@
 module.exports = class Abonnement
 {
-    constructor(clientId, publicationId, dateDebut, dateFin, actif, paye, montantPaye, dateResiliation, montantRembourse)
+    constructor(clientId, publicationId, dateDebut, dateFin, actif, paye, dateResiliation)
     {
         this.id = null
         this.clientId = clientId
@@ -9,8 +9,8 @@ module.exports = class Abonnement
         this.dateFin = dateFin
         this.actif = actif
         this.paye = paye
-        this.montantPaye = montantPaye
         this.dateResiliation = dateResiliation
-        this.montantRembourse = montantRembourse
+        this.paiementId = null
+        this.rembourse = false
     }
 }

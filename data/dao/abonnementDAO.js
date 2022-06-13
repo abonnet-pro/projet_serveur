@@ -8,8 +8,8 @@ module.exports = class AbonnementDAO extends BaseDAO {
 
     insert(abonnement) {
         return new Promise((resolve, reject) => {
-            this.db.query("INSERT INTO abonnement(clientId, publicationId, dateDebut, dateFin, actif, paye, montantPaye, dateResiliation, montantRembourse) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING ID",
-                [abonnement.clientId, abonnement.publicationId, abonnement.dateDebut, abonnement.dateFin, abonnement.actif, abonnement.paye, abonnement.montantPaye, abonnement.dateResiliation, abonnement.montantRembourse])
+            this.db.query("INSERT INTO abonnement(clientId, publicationId, dateDebut, dateFin, actif, paye, dateResiliation, rembourse) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING ID",
+                [abonnement.clientId, abonnement.publicationId, abonnement.dateDebut, abonnement.dateFin, abonnement.actif, abonnement.paye, abonnement.dateResiliation, abonnement.rembourse])
                 .then(res => resolve(res.rows[0].id))
                 .catch(err => reject(err))
         })

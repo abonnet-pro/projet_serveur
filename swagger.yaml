@@ -481,11 +481,9 @@ definitions:
         type: boolean
       paye:
         type: boolean
-      montantPaye:
-        type: number
       dateResiliation:
         type: string
         pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4})/
         example: "14-01-1993"
-      montantRembourse:
-        type: number
+      rembourse:
+        type: boolean
