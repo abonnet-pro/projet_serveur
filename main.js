@@ -5,6 +5,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const swaggerUi = require('swagger-ui-express')
 const yaml = require('yamljs')
+require('dotenv').config();
 
 const UserAccountService = require("./services/useraccount")
 const PublicationService = require("./services/publication")
@@ -21,7 +22,7 @@ app.use(morgan('dev')); // toutes les requêtes HTTP dans le log du serveur
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.static('asset/images'));
 
-const connectionString = "postgres://user1:default@localhost/abonnements"
+const connectionString = process.env.CONNECTION_STRING
 const db = new pg.Pool({ connectionString: connectionString })
 
 const dirName = __dirname
