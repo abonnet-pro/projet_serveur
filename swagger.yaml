@@ -4,7 +4,7 @@ info:
   title: API Abonnements
   description: L'API permettant de gerer les abonnements clients.
   version: 1.0.0
-host: localhost:3332
+host: 164.132.55.64:3332
 basePath: /
 
 paths:
