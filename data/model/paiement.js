@@ -1,11 +1,12 @@
 module.exports = class Paiement {
 
-    constructor(type, montantPaye, transactionId, montantRembourse)
+    constructor(abonnementId)
     {
         this.id = null
-        this.type = type
-        this.montantPaye = montantPaye
-        this.transactionId = transactionId
-        this.montantRembourse = montantRembourse
+        this.abonnementId = abonnementId
+        this.type = null
+        this.montantPaye = null
+        this.transactionId = null
+        this.montantRembourse = null
     }
 }

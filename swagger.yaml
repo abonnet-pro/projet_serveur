@@ -321,6 +321,46 @@ paths:
         401:
           description: Accès non autorisé
 
+  /abonnement/{id}/relancer:
+    post:
+      summary: Relance un abonnement.
+      tags:
+        - Abonnement
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id de l'abonnement
+      responses:
+        200:
+          description: Abonnement renvoyé
+          schema:
+            $ref: '#/definitions/abonnement'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
+  /abonnement/{id}/payer:
+    post:
+      summary: Payer un abonnement.
+      tags:
+        - Abonnement
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id de l'abonnement
+      responses:
+        200:
+          description: Abonnement payé
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
 definitions:
   employeCreation:
     type: object

@@ -10,7 +10,6 @@ module.exports = class Abonnement
         this.actif = actif
         this.paye = paye
         this.dateResiliation = dateResiliation
-        this.paiementId = null
         this.rembourse = false
     }
 }

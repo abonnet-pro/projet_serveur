@@ -21,15 +21,20 @@ module.exports = class AbonnementService {
     }
 
     relancerAbonnement(abonnement) {
-        // let debutAbonnement;
-        // let finAbonnement;
-        // let abonnementRelance = new Abonnement(abonnement.clientid, abonnement.publicationid, null, null, false, false, null)
-        //
-        // if(abonnement.datefin < new Date()) {
-        //
-        // }
-        //
-        // return this.dao.insert(abonnement)
+        let debutAbonnement = abonnement.datefin;
+        let finAbonnement = new Date(debutAbonnement.getFullYear() + 1, debutAbonnement.getMonth(), debutAbonnement.getDate())
+        let abonnementRelance = new Abonnement(abonnement.clientid, abonnement.publicationid, debutAbonnement, finAbonnement, false, false, null)
+        return this.dao.insert(abonnementRelance)
+    }
+
+    async checkFinAbonnements(abonnements) {
+        let now = new Date()
+        for(let abonnement of abonnements) {
+            if(abonnement.datefin < now && abonnement.actif || abonnement.dateresiliation < now && abonnement.actif) {
+                abonnement.actif = false
+            }
+            await this.dao.update(abonnement)
+        }
     }
 
     getAbonnementDTO(abonnement, publication, client) {

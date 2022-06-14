@@ -20,9 +20,10 @@ app.use(bodyParser.json()) // application/json
 app.use(cors())
 app.use(morgan('dev')); // toutes les requêtes HTTP dans le log du serveur
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use(express.static('asset/images'));
+app.use('/api/', express.static('asset/images'));
 
-const connectionString = process.env.CONNECTION_STRING
+// const connectionString = process.env.CONNECTION_STRING
+const connectionString = "postgres://user1:default@localhost/abonnements"
 const db = new pg.Pool({ connectionString: connectionString })
 
 const dirName = __dirname
@@ -39,7 +40,7 @@ const role = require('./utils/role')()
 require('./api/useraccount')(app, userAccountService, role, dirName, jwt)
 require('./api/publication')(app, publicationService, abonnementService, role, dirName, jwt)
 require('./api/client')(app, clientService, dirName, jwt)
-require('./api/abonnement')(app, abonnementService, publicationService, clientService, dirName, jwt)
-require('./api/paiement')(app, paiementService, dirName, jwt)
+require('./api/abonnement')(app, abonnementService, publicationService, clientService, paiementService, dirName, jwt)
+require('./api/paiement')(app, paiementService, abonnementService, dirName, jwt)
 require('./data/seeder')(userAccountService, clientService, publicationService, abonnementService, paiementService)
     .then(_ => app.listen(3332))
