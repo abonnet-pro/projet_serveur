@@ -91,7 +91,25 @@ module.exports = (app, clientService, dirName, jwt) => {
         clientService.dao.update(client)
             .then(() => {
                 clientService.dao.getById(client.id)
-                    .then(client => res.json(client))
+                    .then(async client => {
+
+                        const clientDTO = {
+                            id: client.id,
+                            nom: client.nom,
+                            prenom: client.prenom,
+                            displayName: client.displayname,
+                            login: client.login,
+                            dateNaissance: client.datenaissance,
+                            lieuNaissance: client.lieunaissance,
+                            rue: client.rue,
+                            cp: client.cp,
+                            ville: client.ville,
+                            role: client.role,
+                            token: jwt.generateJWT(client.login)
+                        }
+
+                        res.json(clientDTO)
+                    })
                     .catch(e => {
                         console.log(e)
                         res.status(500).end()
