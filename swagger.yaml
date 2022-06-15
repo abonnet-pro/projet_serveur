@@ -154,7 +154,7 @@ paths:
           description: Récupère la liste des publication en fonction de la donnée promotion
         - in: query
           name: titre
-          type: boolean
+          type: string
           required: false
           description: Récupère la liste des abonnements filtrer par titre (like)
       responses:
