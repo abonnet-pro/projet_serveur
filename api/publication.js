@@ -32,8 +32,9 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
             let publications;
             let active = req.query.active
             let promotion = req.query.promotion
+            let titre = req.query.titre
 
-            publications = await publicationService.getAll(active, promotion)
+            publications = await publicationService.getAll(active, promotion, titre)
 
             if(publications === undefined) {
                 return res.status(404).end()

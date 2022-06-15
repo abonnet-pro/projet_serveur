@@ -6,10 +6,10 @@ module.exports = class PublicationService {
         this.dao = new PublicationDAO(db)
     }
 
-    getAll(active, promotion) {
+    getAll(active, promotion, titre) {
         let where = '';
 
-        if(active || promotion) {
+        if(active || promotion || titre) {
             where += 'WHERE 1=1'
         }
 
@@ -19,6 +19,10 @@ module.exports = class PublicationService {
 
         if(promotion !== undefined) {
             where += ' and promotion = ' + promotion
+        }
+
+        if(titre !== undefined && titre !== '') {
+            where += ' and UPPER(titre) like UPPER(\'%' + titre + '%\')'
         }
 
         return this.dao.getAll(where)

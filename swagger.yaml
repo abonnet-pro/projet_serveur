@@ -141,6 +141,22 @@ paths:
       summary: Récupère la liste des publications.
       tags:
         - Publication
+      parameters:
+        - in: query
+          name: active
+          type: boolean
+          required: false
+          description: Récupère la liste des publication en fonction de la donnée active
+        - in: query
+          name: promotion
+          type: boolean
+          required: false
+          description: Récupère la liste des publication en fonction de la donnée promotion
+        - in: query
+          name: titre
+          type: boolean
+          required: false
+          description: Récupère la liste des abonnements filtrer par titre (like)
       responses:
         200:
           description: La liste des publications
