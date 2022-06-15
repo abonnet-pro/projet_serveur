@@ -76,27 +76,19 @@ module.exports = class AbonnementService {
         let where = '';
 
         if(user.role === "CLIENT" || actif || paye) {
-            where += 'WHERE'
+            where += 'WHERE 1=1'
         }
 
         if(user.role === "CLIENT") {
-            where += ' clientid = ' + user.id
+            where += ' and clientid = ' + user.id
         }
 
         if(actif !== undefined) {
-            if(where === 'WHERE') {
-                where += ' actif = ' + actif
-            } else {
-                where += ' and actif = ' + actif
-            }
+            where += ' and actif = ' + actif
         }
 
         if(paye !== undefined) {
-            if(where === 'WHERE') {
-                where += ' paye = ' + paye
-            } else {
-                where += ' and paye = ' + paye
-            }
+            where += ' and paye = ' + paye
         }
 
         return this.dao.getAll(where)

@@ -28,29 +28,29 @@ module.exports = (app, svc, role, dirName, jwt) => {
     })
 
     app.post('/api/employe/authenticate', (req, res) => {
-        const { login, password } = req.body
+        const form = req.body
 
-        if ((login === undefined) || (password === undefined)) {
+        if ((form.login === undefined) || (form.password === undefined)) {
             return res.status(400).send("Informations invalides")
         }
 
-        svc.validatePassword(login, password)
+        svc.validatePassword(form.login, form.password)
             .then(async authenticated => {
                 if(!authenticated) {
                     return res.status(400).send("Couple email / mot de passe invalide")
                 }
 
-                if (!await svc.isActive(login)) {
+                if (!await svc.isActive(form.login)) {
                     return res.status(400).send("Compte suspendu")
                 }
 
-                const user = await svc.dao.getByLogin(login)
+                const user = await svc.dao.getByLogin(form.login)
                 const userDTO = {
                     nom: user.nom,
                     prenom: user.prenom,
                     login: user.login,
                     role: user.role,
-                    token: jwt.generateJWT(login)
+                    token: jwt.generateJWT(form.login)
                 }
 
                 res.json(userDTO)
