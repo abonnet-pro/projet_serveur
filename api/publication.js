@@ -29,10 +29,16 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
     app.get('/api/publication', async (req, res) => {
         try
         {
-            const publications = await publicationService.dao.getAll()
+            let publications;
+            let active = req.query.active
+            let promotion = req.query.promotion
+
+            publications = await publicationService.getAll(active, promotion)
+
             if(publications === undefined) {
                 return res.status(404).end()
             }
+
             return res.json(publications)
         } catch (e) {
             res.status(400).end()

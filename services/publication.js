@@ -6,6 +6,24 @@ module.exports = class PublicationService {
         this.dao = new PublicationDAO(db)
     }
 
+    getAll(active, promotion) {
+        let where = '';
+
+        if(active || promotion) {
+            where += 'WHERE 1=1'
+        }
+
+        if(active !== undefined) {
+            where += ' and active = ' + active
+        }
+
+        if(promotion !== undefined) {
+            where += ' and promotion = ' + promotion
+        }
+
+        return this.dao.getAll(where)
+    }
+
     isValid(publication) {
         publication.titre = publication.titre && publication.titre.trim()
         publication.description = publication.description && publication.description.trim()

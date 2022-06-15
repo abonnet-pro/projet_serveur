@@ -7,9 +7,9 @@ module.exports = class UserAccountDAO extends BaseDAO
         super(db, "publication")
     }
 
-    getAll() {
+    getAll(where) {
         return new Promise((resolve, reject) => {
-            this.db.query("SELECT * FROM publication")
+            this.db.query("SELECT * FROM publication " + where)
                 .then(res => resolve(res.rows))
                 .catch(err => reject(err))
         })
