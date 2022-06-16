@@ -29,23 +29,23 @@ module.exports = (app, clientService, dirName, jwt) => {
     })
 
     app.post('/api/client/authenticate', (req, res) => {
-        const { login, password } = req.body
+        const form = req.body
 
-        if ((login === undefined) || (password === undefined)) {
+        if ((form.login === undefined) || (form.password === undefined)) {
             return res.status(400).send("Informations invalides")
         }
 
-        clientService.validatePassword(login, password)
+        clientService.validatePassword(form.login, form.password)
             .then(async authenticated => {
                 if(!authenticated) {
                     return res.status(400).send("Couple email / mot de passe invalide")
                 }
 
-                if (!await clientService.isActive(login)) {
+                if (!await clientService.isActive(form.login)) {
                     return res.status(400).send("Compte suspendu")
                 }
 
-                const client = await clientService.dao.getByLogin(login)
+                const client = await clientService.dao.getByLogin(form.login)
                 const clientDTO = {
                     id: client.id,
                     nom: client.nom,
@@ -58,7 +58,7 @@ module.exports = (app, clientService, dirName, jwt) => {
                     cp: client.cp,
                     ville: client.ville,
                     role: client.role,
-                    token: jwt.generateJWT(login)
+                    token: jwt.generateJWT(form.login)
                 }
 
                 res.json(clientDTO)
