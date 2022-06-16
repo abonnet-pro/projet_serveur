@@ -20,7 +20,7 @@ app.use(bodyParser.json()) // application/json
 app.use(cors())
 app.use(morgan('dev')); // toutes les requêtes HTTP dans le log du serveur
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use('/api/', express.static('asset/images'));
+app.use('/api/images', express.static('asset/images'));
 
 const connectionString = process.env.CONNECTION_STRING
 const db = new pg.Pool({ connectionString: connectionString })
