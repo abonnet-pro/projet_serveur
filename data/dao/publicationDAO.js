@@ -27,7 +27,7 @@ module.exports = class UserAccountDAO extends BaseDAO
 
     update(publication)
     {
-        return this.db.query("UPDATE publication SET titre=$2,description=$3,nbrNumeroAnnee=$4, photoCouverture=$5, prixAnnuel=$6, promotion=$7, pourcentagePromo=$8 WHERE id=$1",
-            [publication.id, publication.titre, publication.description, publication.nbrnumeroannee, publication.photocouverture, publication.prixannuel, publication.promotion, publication.pourcentagepromo])
+        return this.db.query("UPDATE publication SET titre=$2,description=$3,nbrNumeroAnnee=$4, photoCouverture=$5, prixAnnuel=$6, promotion=$7, pourcentagePromo=$8, active=$9 WHERE id=$1",
+            [publication.id, publication.titre, publication.description, publication.nbrnumeroannee, publication.photocouverture, publication.prixannuel, publication.promotion, publication.pourcentagepromo, publication.active])
     }
 }

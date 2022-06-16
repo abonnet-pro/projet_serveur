@@ -22,7 +22,7 @@ module.exports = class PaiementService {
     }
 
     async payerAbonnement(paiement, cardInformations, publication) {
-        const amount = publication.pourcentagePromo ? (publication.prixannuel * publication.pourcentagePromo)/100 : publication.prixannuel
+        const amount = publication.promotion && publication.pourcentagePromo ? (publication.prixannuel * publication.pourcentagePromo)/100 : publication.prixannuel
         const url = `${esipayURL}/cardpay/${uuidSubMyZine}/${paiement.id}/${cardInformations.numeroCarte}/${cardInformations.moisCarte}/${cardInformations.anneeCarte}/${amount}`
         return axios.get(url)
     }

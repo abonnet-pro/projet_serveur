@@ -45,7 +45,8 @@ module.exports = class PublicationService {
         if(newPublication.nbrNumeroAnnee) publication.nbrnumeroannee = newPublication.nbrNumeroAnnee
         if(newPublication.photoCouverture) publication.photocouverture = newPublication.photoCouverture
         if(newPublication.prixAnnuel) publication.prixannuel = newPublication.prixAnnuel
-        if(newPublication.promotion) publication.promotion = newPublication.promotion
+        if(newPublication.promotion !== undefined) publication.promotion = newPublication.promotion
         if(newPublication.pourcentagePromo) publication.pourcentagepromo = newPublication.pourcentagePromo
+        if(newPublication.active !== undefined) publication.active = newPublication.active
     }
 }
