@@ -111,6 +111,11 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
                 return res.status(400).send("Impossible de trouver la publication")
             }
 
+            const abonnements = await abonnementService.dao.getAbonnementByPublication(publication.id)
+            if(abonnements !== undefined) {
+                return res.status(400).send("Impossible de supprimer, la publication est rattaché à une abonnement en cours")
+            }
+
             publicationService.dao.delete(req.params.id)
                 .then(res.status(200).end())
                 .catch(e => {
