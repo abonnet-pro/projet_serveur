@@ -104,4 +104,19 @@ module.exports = class UserAccountService {
             return false
         return true
     }
+
+    getClientsDTO(clients) {
+        let retour = []
+        for(let client of clients) {
+            Reflect.deleteProperty(client, "challenge")
+            retour.push(client)
+        }
+
+        return retour
+    }
+
+    getClientDTO(client) {
+        Reflect.deleteProperty(client, "challenge")
+        return client
+    }
 }

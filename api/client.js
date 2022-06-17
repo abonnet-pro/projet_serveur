@@ -1,4 +1,4 @@
-module.exports = (app, clientService, dirName, jwt) => {
+module.exports = (app, clientService, role, dirName, jwt) => {
 
     app.post('/api/client', async (req, res) => {
         const client = req.body
@@ -69,6 +69,36 @@ module.exports = (app, clientService, dirName, jwt) => {
             })
     })
 
+    app.get('/api/client', jwt.validateJWT, role.employe, async (req, res) => {
+        try
+        {
+            let clients = await clientService.dao.getAll()
+
+            if(clients === undefined) {
+                return res.status(404).end()
+            }
+
+            return res.json(clientService.getClientsDTO(clients))
+        } catch (e) {
+            res.status(400).end()
+        }
+    })
+
+    app.get('/api/client/:id', jwt.validateJWT, role.employe, async (req, res) => {
+        try
+        {
+            let client = await clientService.dao.getById(req.params.id)
+
+            if(client === undefined) {
+                return res.status(404).end()
+            }
+
+            return res.json(clientService.getClientDTO(client))
+        } catch (e) {
+            res.status(400).end()
+        }
+    })
+
     app.patch('/api/client/:id', jwt.validateJWT, async (req, res) => {
         const client = await clientService.dao.getById(req.params.id)
         if(!client) {
@@ -105,7 +135,94 @@ module.exports = (app, clientService, dirName, jwt) => {
                             cp: client.cp,
                             ville: client.ville,
                             role: client.role,
+                            active: client.active,
                             token: jwt.generateJWT(client.login)
+                        }
+
+                        res.json(clientDTO)
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        res.status(500).end()
+                    })
+            })
+            .catch(e => {
+                console.log(e)
+                res.status(500).end()
+            })
+    })
+
+    app.post('/api/client/:id/activer', jwt.validateJWT, role.employe, async (req, res) => {
+        const client = await clientService.dao.getById(req.params.id)
+        if(!client) {
+            return res.status(400).send("Impossible de trouver le client")
+        }
+
+        if(client.active) {
+            return res.status(400).send("Le compte est déjà activé")
+        }
+
+        clientService.dao.active(client.id)
+            .then(() => {
+                clientService.dao.getById(client.id)
+                    .then(async client => {
+
+                        const clientDTO = {
+                            id: client.id,
+                            nom: client.nom,
+                            prenom: client.prenom,
+                            displayName: client.displayname,
+                            login: client.login,
+                            dateNaissance: client.datenaissance,
+                            lieuNaissance: client.lieunaissance,
+                            rue: client.rue,
+                            cp: client.cp,
+                            ville: client.ville,
+                            role: client.role,
+                            active: client.active
+                        }
+
+                        res.json(clientDTO)
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        res.status(500).end()
+                    })
+            })
+            .catch(e => {
+                console.log(e)
+                res.status(500).end()
+            })
+    })
+
+    app.post('/api/client/:id/desactiver', jwt.validateJWT, role.employe, async (req, res) => {
+        const client = await clientService.dao.getById(req.params.id)
+        if(!client) {
+            return res.status(400).send("Impossible de trouver le client")
+        }
+
+        if(!client.active) {
+            return res.status(400).send("Le compte est déjà desactivé")
+        }
+
+        clientService.dao.desactive(client.id)
+            .then(() => {
+                clientService.dao.getById(client.id)
+                    .then(async client => {
+
+                        const clientDTO = {
+                            id: client.id,
+                            nom: client.nom,
+                            prenom: client.prenom,
+                            displayName: client.displayname,
+                            login: client.login,
+                            dateNaissance: client.datenaissance,
+                            lieuNaissance: client.lieunaissance,
+                            rue: client.rue,
+                            cp: client.cp,
+                            ville: client.ville,
+                            role: client.role,
+                            active: client.active
                         }
 
                         res.json(clientDTO)

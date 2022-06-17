@@ -90,6 +90,50 @@ paths:
         401:
           description: Accès non autorisé
 
+  /client/{id}/activer:
+    post:
+      summary: Active un compte client.
+      tags:
+        - Client
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id du client
+
+      responses:
+        200:
+          description: Compte client activer
+          schema:
+            $ref: '#/definitions/client'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
+  /client/{id}/desactiver:
+    post:
+      summary: Desactive un compte client.
+      tags:
+        - Client
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id du client
+
+      responses:
+        200:
+          description: Compte client desactiver
+          schema:
+            $ref: '#/definitions/client'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
   /client/authenticate:
     post:
       summary: Authentifie un client.
@@ -490,8 +534,8 @@ definitions:
         type: string
       ville:
         type: string
-      password:
-        type: string
+      active:
+        type: boolean
       role:
         type: string
 
