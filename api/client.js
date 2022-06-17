@@ -1,4 +1,4 @@
-module.exports = (app, clientService, role, dirName, jwt) => {
+module.exports = (app, clientService, abonnementService, paiementService, role, dirName, jwt) => {
 
     app.post('/api/client', async (req, res) => {
         const client = req.body
@@ -78,7 +78,7 @@ module.exports = (app, clientService, role, dirName, jwt) => {
                 return res.status(404).end()
             }
 
-            return res.json(clientService.getClientsDTO(clients))
+            return res.json(await clientService.getClientsDTO(clients, abonnementService))
         } catch (e) {
             res.status(400).end()
         }

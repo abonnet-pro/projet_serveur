@@ -11,11 +11,15 @@ module.exports = (userAccountService, clientService, publicationService, abonnem
             await abonnementService.dao.db.query("CREATE TABLE abonnement(id SERIAL PRIMARY KEY, clientId INTEGER NOT NULL, publicationId INTEGER NOT NULL, dateDebut DATE, dateFin DATE, actif BOOLEAN NOT NULL, paye BOOLEAN NOT NULL, dateResiliation DATE, rembourse BOOLEAN NOT NULL, FOREIGN KEY(clientId) REFERENCES client(id), FOREIGN KEY(publicationId) REFERENCES publication(id))")
             await paiementService.dao.db.query("CREATE TABLE paiement(id SERIAL PRIMARY KEY, abonnementId INTEGER, type TEXT, montantPaye REAL, transactionId TEXT, montantRembourse REAL, FOREIGN KEY(abonnementId) REFERENCES abonnement(id))")
 
-            await userAccountService.dao.insert(new UserAccount("Employe 1", "EMPLOYE", "employe1@esimed.fr", userAccountService.hashPassword("employe"), "EMPLOYE", true, true))
             await userAccountService.dao.insert(new UserAccount("Admin", "ADMIN", "admin@esimed.fr", userAccountService.hashPassword("admin"), "ADMIN", true, false))
 
-            await clientService.dao.insert(new Client("Client 1", "Client", "Client", "client1@client.fr", "14/01/1993", "Saint-Etienne", "2 rue rascas", "84000", "Avignon", userAccountService.hashPassword("client"), "CLIENT", true))
-            await clientService.dao.insert(new Client("Client 2", "Client", "Client", "client2@client.fr", "14/01/1993", "Saint-Etienne", "2 rue rascas", "84000", "Avignon", userAccountService.hashPassword("client"), "CLIENT", true))
+            for(let i = 0; i < 50; i++) {
+                await userAccountService.dao.insert(new UserAccount("Employe " + i, "EMPLOYE", "employe" + i + "@esimed.fr", userAccountService.hashPassword("employe"), "EMPLOYE", true, true))
+            }
+
+            for(let i = 0; i < 50; i++) {
+                await clientService.dao.insert(new Client("Client " + i, "Client", "Client", "client" + i + "@client.fr", "14/01/1993", "Saint-Etienne", "2 rue rascas", "84000", "Avignon", userAccountService.hashPassword("client"), "CLIENT", true))
+            }
 
             for(let i = 0; i < 50; i++) {
                 await publicationService.dao.insert(new Publication("France Promo", 12, "fe986c39ebe69725d4493c9f269994ed.png", "France football magazine", 99.99, true, 50))

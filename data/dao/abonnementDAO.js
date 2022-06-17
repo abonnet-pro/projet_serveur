@@ -29,6 +29,13 @@ module.exports = class AbonnementDAO extends BaseDAO {
                 .catch(e => reject(e)))
     }
 
+    getAbonnementByClient(clientId) {
+        return new Promise((resolve, reject) =>
+            this.db.query("SELECT * FROM abonnement WHERE clientid=$1", [clientId])
+                .then(res => resolve(res.rows) )
+                .catch(e => reject(e)))
+    }
+
     getAll(where) {
         return new Promise((resolve, reject) =>
             this.db.query("SELECT * FROM abonnement " + where)
