@@ -38,6 +38,6 @@ module.exports = class PaiementService {
         mois = (abonnement.datefin.getFullYear() - abonnement.dateresiliation.getFullYear()) * 12;
         mois -= abonnement.dateresiliation.getMonth();
         mois += abonnement.datefin.getMonth();
-        return (paiement.montantpaye / mois) * mois
+        return (paiement.montantpaye / 12) * mois
     }
 }
