@@ -15,7 +15,7 @@ module.exports = class PaiementDAO extends BaseDAO {
 
     insert(paiement) {
         return new Promise((resolve, reject) => {
-            this.db.query("INSERT INTO paiement(abonnementId, type, montantPaye, datePaiement, transactionId, montantRembourse) VALUES($1, $2, $3, $4, $5) RETURNING ID",
+            this.db.query("INSERT INTO paiement(abonnementId, type, montantPaye, datePaiement, transactionId, montantRembourse) VALUES($1, $2, $3, $4, $5, $6) RETURNING ID",
                 [paiement.abonnementId, null, null, null, null, null])
                 .then(res => resolve(res.rows[0].id))
                 .catch(err => reject(err))
