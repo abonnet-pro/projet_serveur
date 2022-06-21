@@ -1,6 +1,6 @@
 const Paiement = require("../data/model/paiement")
 
-module.exports = (app, abonnementService, publicationService, clientService, paiementService, dirName, jwt) => {
+module.exports = (app, abonnementService, publicationService, clientService, paiementService, role, dirName, jwt) => {
 
     app.get('/api/abonnement', jwt.validateJWT , async (req, res) => {
         try
@@ -8,8 +8,9 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
             let abonnements;
             let actif = req.query.actif
             let paye = req.query.paye
+            let client = req.query.user
 
-            abonnements = await abonnementService.getAll(req.user, actif, paye)
+            abonnements = await abonnementService.getAll(req.user, actif, paye, client)
 
             if(abonnements === undefined) {
                 return res.status(404).end()
@@ -148,7 +149,7 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
             paiement.id = await paiementService.dao.insert(paiement)
 
             paiementService.payerAbonnement(paiement, cardInformations, publication)
-                .then(_ => res.status(200).end())
+                .then(_ => res.json(paiement))
                 .catch(async e => {
                     await paiementService.dao.delete(paiement.id)
                     if(e.response.status === 409) {
@@ -157,6 +158,43 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
                     return res.status(400).end()
                 })
         } catch (e) {
+            res.status(400).end()
+        }
+    })
+
+    app.post('/api/abonnement/:id/relancer/mail', jwt.validateJWT, role.employe, async (req, res) => {
+        try
+        {
+            let abonnement = await abonnementService.dao.getById(req.params.id)
+
+            if(abonnement === undefined) {
+                return res.status(400).send("Impossible de trouver l'abonnement")
+            }
+
+            if(abonnement.paye) {
+                return res.status(400).send("L'abonnement a déjà été payé")
+            }
+
+            let publication = await publicationService.dao.getById(abonnement.publicationid)
+
+            if(publication === undefined) {
+                return res.status(400).send("Erreur inconnue")
+            }
+
+            let client = await clientService.dao.getById(abonnement.clientid)
+
+            if(client === undefined) {
+                return res.status(400).send("Erreur inconnue")
+            }
+
+            abonnementService.envoyerMailRelance(client, abonnement, publication)
+                .then(_ => res.status(200).end())
+                .catch(err => {
+                    console.log(err)
+                    res.status(400).end()
+                })
+        } catch (e) {
+            console.log(e)
             res.status(400).end()
         }
     })

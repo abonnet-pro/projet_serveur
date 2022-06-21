@@ -26,4 +26,18 @@ module.exports = class PaiementService {
         const url = `${esipayURL}/cardpay/${uuidSubMyZine}/${paiement.id}/${cardInformations.numeroCarte}/${cardInformations.moisCarte}/${cardInformations.anneeCarte}/${amount}`
         return axios.get(url)
     }
+
+    async rembourserPaiement(paiement, abonnement) {
+        paiement.montantrembourse = this.getMontantRemboursement(paiement, abonnement)
+        const url = `${esipayURL}/cardpay/${uuidSubMyZine}/${paiement.transactionid}/${paiement.montantrembourse}`
+        return axios.get(url)
+    }
+
+    getMontantRemboursement(paiement, abonnement) {
+        let mois;
+        mois = (abonnement.datefin.getFullYear() - abonnement.dateresiliation.getFullYear()) * 12;
+        mois -= abonnement.dateresiliation.getMonth();
+        mois += abonnement.datefin.getMonth();
+        return paiement.montantpaye / mois
+    }
 }

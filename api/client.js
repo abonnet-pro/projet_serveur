@@ -1,4 +1,4 @@
-module.exports = (app, clientService, abonnementService, paiementService, role, dirName, jwt) => {
+module.exports = (app, clientService, abonnementService, paiementService, publicationService, role, dirName, jwt) => {
 
     app.post('/api/client', async (req, res) => {
         const client = req.body
@@ -93,7 +93,7 @@ module.exports = (app, clientService, abonnementService, paiementService, role, 
                 return res.status(404).end()
             }
 
-            return res.json(clientService.getClientDTO(client))
+            return res.json(await clientService.getClientDTO(client, abonnementService, paiementService, publicationService))
         } catch (e) {
             res.status(400).end()
         }
@@ -171,10 +171,10 @@ module.exports = (app, clientService, abonnementService, paiementService, role, 
                             id: client.id,
                             nom: client.nom,
                             prenom: client.prenom,
-                            displayName: client.displayname,
+                            displayname: client.displayname,
                             login: client.login,
-                            dateNaissance: client.datenaissance,
-                            lieuNaissance: client.lieunaissance,
+                            datenaissance: client.datenaissance,
+                            lieunaissance: client.lieunaissance,
                             rue: client.rue,
                             cp: client.cp,
                             ville: client.ville,
@@ -214,10 +214,10 @@ module.exports = (app, clientService, abonnementService, paiementService, role, 
                             id: client.id,
                             nom: client.nom,
                             prenom: client.prenom,
-                            displayName: client.displayname,
+                            displayname: client.displayname,
                             login: client.login,
-                            dateNaissance: client.datenaissance,
-                            lieuNaissance: client.lieunaissance,
+                            datenaissance: client.datenaissance,
+                            lieunaissance: client.lieunaissance,
                             rue: client.rue,
                             cp: client.cp,
                             ville: client.ville,

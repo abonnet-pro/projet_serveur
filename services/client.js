@@ -123,8 +123,22 @@ module.exports = class UserAccountService {
         return retour
     }
 
-    getClientDTO(client) {
+    async getClientDTO(client, abonnementService, paiementService, publicationService) {
         Reflect.deleteProperty(client, "challenge")
+
+        let abonnements = await abonnementService.dao.getAbonnementByClient(client.id)
+
+        if(abonnements === null) {
+            abonnements = []
+        } else {
+            for(let abonnement of abonnements) {
+                abonnement.publication = await publicationService.dao.getById(abonnement.publicationid)
+                Reflect.deleteProperty(abonnement, "publicationid")
+                abonnement.paiement = await paiementService.dao.getByAbonnement(abonnement.id)
+            }
+        }
+
+        client.abonnements = abonnements
         return client
     }
 }
