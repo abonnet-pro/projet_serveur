@@ -1,9 +1,7 @@
 const PaiementDAO = require("../data/dao/paiementDAO")
-const Paiement = require("../data/model/paiement")
 const axios = require('axios')
 
 const esipayURL = 'http://esipay.esimed.fr'
-const uuidSubMyZine = '7e26fefe-ef6a-b825-736c-521c25e58892'
 
 module.exports = class PaiementService {
     constructor(db) {
@@ -23,13 +21,13 @@ module.exports = class PaiementService {
 
     async payerAbonnement(paiement, cardInformations, publication) {
         const amount = publication.promotion && publication.pourcentagePromo ? (publication.prixannuel * publication.pourcentagePromo)/100 : publication.prixannuel
-        const url = `${esipayURL}/cardpay/${uuidSubMyZine}/${paiement.id}/${cardInformations.numeroCarte}/${cardInformations.moisCarte}/${cardInformations.anneeCarte}/${amount}`
+        const url = `${esipayURL}/cardpay/${process.env.UUIDSUBMYZINE}/${paiement.id}/${cardInformations.numeroCarte}/${cardInformations.moisCarte}/${cardInformations.anneeCarte}/${amount}`
         return axios.get(url)
     }
 
     async rembourserPaiement(paiement, abonnement) {
         paiement.montantrembourse = this.getMontantRemboursement(paiement, abonnement)
-        const url = `${esipayURL}/cardpay/${uuidSubMyZine}/${paiement.transactionid}/${paiement.montantrembourse}`
+        const url = `${esipayURL}/cardpay/${process.env.UUIDSUBMYZINE}/${paiement.transactionid}/${paiement.montantrembourse}`
         return axios.get(url)
     }
 
