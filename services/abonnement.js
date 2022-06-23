@@ -48,7 +48,7 @@ module.exports = class AbonnementService {
                 let client = await this.clientService.dao.getById(abonnement.clientid)
                 let publication = await this.publicationService.dao.getById(abonnement.publicationid)
                 await this.communicationService.envoyerFinAbonnement(client, publication)
-                await this.communicationService.dao.insert(new Communication("EMAIL", client.id, `FIN_ABONNEMENT_${abonnement.id}`, new Date()))
+                await this.communicationService.dao.insert(new Communication("EMAIL", client.id, `ALERTE_ABONNEMENT_${abonnement.id}`, new Date()))
             }
         }
     }

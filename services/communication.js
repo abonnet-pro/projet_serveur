@@ -17,7 +17,7 @@ module.exports = class CommunicationService {
 
     canSendFinAbonnement(communications, abonnement) {
         for(let communication of communications) {
-            if(abonnement.clientid === communication.clientid && communication.objet === `FIN_ABONNEMENT_${abonnement.id}`) {
+            if(abonnement.clientid === communication.clientid && communication.objet === `ALERTE_ABONNEMENT_${abonnement.id}`) {
                 return false
             }
         }
@@ -101,7 +101,7 @@ module.exports = class CommunicationService {
                    <p>Nous vous remercions de l'intérêt que vous portez à SubMyZine.</p>
                    <p>Nous avons reçu avec succès votre demande de résiliation pour l'abonnement ${publication.titre}</p>
                    <p>Après examination de votre dossier nous avons décider de rembourser votre abonnement au pro rata de votre temps d'abonnement actif</p>
-                   <p>Nous vous avons donc envoyé un remboursement d'une valeur de ${paiement.montantrembourse}.</p>
+                   <p>Nous vous avons donc envoyé un remboursement d'une valeur de ${paiement.montantrembourse} €.</p>
                    <p>Nous restons à votre disposition pour toute question de votre part.</p>
                    <p>Cordialement,</p>
                    <p>L'équipe SubMyZine</p>`
