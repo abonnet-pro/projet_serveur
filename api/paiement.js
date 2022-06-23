@@ -2,6 +2,39 @@ const Communication = require("../data/model/communication")
 
 module.exports = (app, paiementService, abonnementService, clientService, communicationService, publicationService, role, dirName, jwt) => {
 
+    app.get('/api/paiement/:id', jwt.validateJWT, async (req, res) => {
+        try
+        {
+            let paiement = await paiementService.dao.getById(req.params.id)
+            if(paiement === undefined) {
+                return res.status(400).send("Impossible de trouver le paiement")
+            }
+
+            let abonnement = await abonnementService.dao.getById(paiement.abonnementid)
+            if(abonnement === undefined) {
+                return res.status(400).send("Erreur inconnue")
+            }
+
+            let client = await clientService.dao.getById(abonnement.clientid)
+            if(client === undefined) {
+                return res.status(400).send("Erreur inconnue")
+            }
+
+            if(req.user.role === "CLIENT" && client.id !== req.user.id) {
+                return res.status(401).end()
+            }
+
+            const paiementDTO = {
+                id: paiement.id,
+                montantPaye: paiement.montantpaye
+            }
+            return res.json(paiementDTO)
+
+        } catch (e) {
+            res.status(400).end()
+        }
+    })
+
     app.post('/api/paiement/valider', async (req, res) => {
         try
         {

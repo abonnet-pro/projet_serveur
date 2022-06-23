@@ -148,7 +148,13 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
             paiement.id = await paiementService.dao.insert(paiement)
 
             paiementService.payerAbonnement(paiement, cardInformations, publication)
-                .then(_ => res.json(paiement))
+                .then(_ => {
+                    let paiementDTO = {
+                        id: paiement.id,
+                        montantPaye: paiement.montantPaye
+                    }
+                    res.json(paiementDTO)
+                })
                 .catch(async e => {
                     await paiementService.dao.delete(paiement.id)
                     if(e.response.status === 409) {

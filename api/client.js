@@ -106,7 +106,7 @@ module.exports = (app, clientService, abonnementService, paiementService, public
                 return res.status(404).end()
             }
 
-            return res.json(await clientService.getClientDTO(client, abonnementService, paiementService, publicationService))
+            return res.json(await clientService.getClientDTO(client, abonnementService, paiementService, publicationService, communicationService))
         } catch (e) {
             res.status(400).end()
         }

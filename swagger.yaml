@@ -449,6 +449,8 @@ paths:
       responses:
         200:
           description: Abonnement payé
+          schema:
+            $ref: '#/definitions/paiement'
         400:
           description: Erreur, voir descriptif de l'erreur
         401:
@@ -718,3 +720,11 @@ definitions:
         example: "14-01-1993"
       rembourse:
         type: boolean
+
+  paiement:
+    type: object
+    properties:
+      id:
+        type: number
+      montantPaye:
+        type: number
