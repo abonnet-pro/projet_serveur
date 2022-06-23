@@ -106,7 +106,6 @@ module.exports = (app, paiementService, abonnementService, clientService, commun
         try
         {
             let paiement = await paiementService.dao.getById(req.params.id)
-
             if(paiement === undefined) {
                 return res.status(400).send("Impossible de trouver le paiement")
             }
@@ -116,7 +115,6 @@ module.exports = (app, paiementService, abonnementService, clientService, commun
             }
 
             let abonnement = await abonnementService.dao.getById(paiement.abonnementid)
-
             if(abonnement === undefined) {
                 return res.status(400).send("Erreur inconnue")
             }
@@ -127,6 +125,16 @@ module.exports = (app, paiementService, abonnementService, clientService, commun
 
             if(!abonnement.dateresiliation) {
                 abonnement.dateresiliation = new Date()
+            }
+
+            let client = await clientService.dao.getById(abonnement.clientid)
+            if(client === undefined) {
+                return res.status(400).send("Erreur inconnue")
+            }
+
+            let publication = await publicationService.dao.getById(abonnement.publicationid)
+            if(publication === undefined) {
+                return res.status(400).send("Erreur inconnue")
             }
 
             paiementService.rembourserPaiement(paiement, abonnement)
@@ -140,7 +148,11 @@ module.exports = (app, paiementService, abonnementService, clientService, commun
                             res.status(400).end()
                         })
                     paiementService.dao.update(paiement)
-                        .then(_ => res.status(200).end())
+                        .then(async _ => {
+                            await communicationService.envoyerMailRemboursement(client, paiement, publication)
+                            await communicationService.dao.insert(new Communication("EMAIL", client.id, `REMBOURSEMENT_${paiement.id}`, new Date()))
+                            res.status(200).end()
+                        })
                         .catch(e => {
                             console.log(e)
                             res.status(400).end()

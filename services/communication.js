@@ -90,4 +90,21 @@ module.exports = class CommunicationService {
                    <p>L'équipe SubMyZine</p>`
         })
     }
+
+    envoyerMailRemboursement(client, paiement, publication) {
+        return transport.sendMail({
+            from: process.env.AUTH_MAILER_USER,
+            to: client.login,
+            subject: "Votre remboursement pour " + publication.titre,
+            html: `<h1>Confirmation de remboursement</h1>
+                   <h2>Bonjour ${client.displayname}</h2>
+                   <p>Nous vous remercions de l'intérêt que vous portez à SubMyZine.</p>
+                   <p>Nous avons reçu avec succès votre demande de résiliation pour l'abonnement ${publication.titre}</p>
+                   <p>Après examination de votre dossier nous avons décider de rembourser votre abonnement au pro rata de votre temps d'abonnement actif</p>
+                   <p>Nous vous avons donc envoyé un remboursement d'une valeur de ${paiement.montantrembourse}.</p>
+                   <p>Nous restons à votre disposition pour toute question de votre part.</p>
+                   <p>Cordialement,</p>
+                   <p>L'équipe SubMyZine</p>`
+        })
+    }
 }
