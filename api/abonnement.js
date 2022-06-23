@@ -117,7 +117,7 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
         }
     })
 
-    app.post('/api/abonnement/:id/payer', jwt.validateJWT , async (req, res) => {
+    app.post('/api/abonnement/:id/payer', jwt.validateJWT, async (req, res) => {
         try
         {
             let abonnement = await abonnementService.dao.getById(req.params.id)
