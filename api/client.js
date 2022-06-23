@@ -22,7 +22,7 @@ module.exports = (app, clientService, abonnementService, paiementService, public
             return res.status(400).send("Le mot de passe ne respecte pas les consignes de securité")
         }
 
-        clientService.insert(client.nom, client.prenom, client.displayName, client.login, client.dateNaissance, client.lieuNaissance, client.rue, client.cp, client.ville, client.password)
+        clientService.insert(client.nom, client.prenom, client.displayName, client.login, client.telephone, client.dateNaissance, client.lieuNaissance, client.rue, client.cp, client.ville, client.password)
             .then(clientId => {
                 communicationService.envoyerMailInscription(client)
                     .then(async _ => {
@@ -65,6 +65,7 @@ module.exports = (app, clientService, abonnementService, paiementService, public
                     prenom: client.prenom,
                     displayName: client.displayname,
                     login: client.login,
+                    telephone: client.telephone,
                     dateNaissance: client.datenaissance,
                     lieuNaissance: client.lieunaissance,
                     rue: client.rue,
@@ -126,6 +127,10 @@ module.exports = (app, clientService, abonnementService, paiementService, public
             return res.status(400).send("Email invalide")
         }
 
+        if(!clientService.isValidTelephone(req.body.telephone)) {
+            return res.status(400).send("Téléphone invalide")
+        }
+
         if(!await clientService.isLoginValid(req.body.login)) {
             return res.status(400).send("Login déjà utilisé")
         }
@@ -142,6 +147,7 @@ module.exports = (app, clientService, abonnementService, paiementService, public
                             prenom: client.prenom,
                             displayName: client.displayname,
                             login: client.login,
+                            telephone: client.telephone,
                             dateNaissance: client.datenaissance,
                             lieuNaissance: client.lieunaissance,
                             rue: client.rue,
@@ -185,7 +191,9 @@ module.exports = (app, clientService, abonnementService, paiementService, public
                             nom: client.nom,
                             prenom: client.prenom,
                             displayname: client.displayname,
+                            datecreation: client.datecreation,
                             login: client.login,
+                            telephone: client.telephone,
                             datenaissance: client.datenaissance,
                             lieunaissance: client.lieunaissance,
                             rue: client.rue,
@@ -229,6 +237,8 @@ module.exports = (app, clientService, abonnementService, paiementService, public
                             prenom: client.prenom,
                             displayname: client.displayname,
                             login: client.login,
+                            datecreation: client.datecreation,
+                            telephone: client.telephone,
                             datenaissance: client.datenaissance,
                             lieunaissance: client.lieunaissance,
                             rue: client.rue,

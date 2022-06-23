@@ -28,6 +28,8 @@ module.exports = class UserAccountService {
         if(client.ville === "" || client.ville === null || client.ville === undefined) return false
         if(client.cp === "" || client.cp === null || client.cp === undefined) return false
         if(client.login === null || client.login === undefined) return false
+        if(client.telephone === null || client.telephone === undefined) return false
+        if(!client.telephone.match(new RegExp('[0-9]{10}'))) return false
         if(!client.login.match(new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))) return false
         if(client.dateNaissance == null) return false
         return client.password != null;
@@ -36,6 +38,13 @@ module.exports = class UserAccountService {
     isValidEmail(email) {
         if(email) {
             return email.match(new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))
+        }
+        return true
+    }
+
+    isValidTelephone(telephone) {
+        if(telephone) {
+            return telephone.match(new RegExp('[0-9]{10}'))
         }
         return true
     }
@@ -64,9 +73,9 @@ module.exports = class UserAccountService {
         return false
     }
 
-    insert(nom, prenom, displayName, login, dateNaissance, lieuNaissance, rue, cp, ville, password)
+    insert(nom, prenom, displayName, login, telephone, dateNaissance, lieuNaissance, rue, cp, ville, password)
     {
-        return this.dao.insert(new Client(nom, prenom, displayName, login, dateNaissance, lieuNaissance, rue, cp, ville, this.hashPassword(password), "CLIENT", true))
+        return this.dao.insert(new Client(nom, prenom, displayName, login, telephone, dateNaissance, lieuNaissance, rue, cp, ville, this.hashPassword(password), "CLIENT", true))
     }
 
     async validatePassword(login, password)
@@ -97,6 +106,7 @@ module.exports = class UserAccountService {
         if(newClient.rue) client.rue = newClient.rue
         if(newClient.cp) client.cp = newClient.cp
         if(newClient.ville) client.ville = newClient.ville
+        if(newClient.telephone) client.telephone = newClient.telephone
     }
 
     canAccess(me, client) {
