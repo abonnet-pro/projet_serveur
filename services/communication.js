@@ -15,6 +15,15 @@ module.exports = class CommunicationService {
         this.dao = new CommunicationDAO(db)
     }
 
+    canSendFinAbonnement(communications, abonnement) {
+        for(let communication of communications) {
+            if(abonnement.clientid === communication.clientid && communication.objet === `FIN_ABONNEMENT_${abonnement.id}`) {
+                return false
+            }
+        }
+        return true
+    }
+
     envoyerMailInscription(client) {
         return transport.sendMail({
             from: process.env.AUTH_MAILER_USER,
@@ -46,6 +55,24 @@ module.exports = class CommunicationService {
                    <p>L'équipe SubMyZine</p>`
         })
     }
+
+    envoyerFinAbonnement(client, publication) {
+        return transport.sendMail({
+            from: process.env.AUTH_MAILER_USER,
+            to: client.login,
+            subject: "Votre abonnement à " + publication.titre,
+            html: `<h1>Email de relance</h1>
+                   <h2>Bonjour ${client.displayname}</h2>
+                   <p>Nous vous remercions de l'intérêt que vous portez à SubMyZine.</p>
+                   <p>Nous avons détecté que votre abonnement à ${publication.titre} se termine dans moins de 2 mois.</p>
+                   <p>Nous vous invitons à relancer l'abonnement si celui-ci vous a satisfait pour continuer à profiter de tous ses avantages.</p> 
+                   <p>Dans le cas contraire vous pouvez nous faire parvenir votre retour à l'adresse submyzine@gmail.com.</p>
+                   <p>Nous restons à votre disposition pour toute question de votre part.</p>
+                   <p>Cordialement,</p>
+                   <p>L'équipe SubMyZine</p>`
+        })
+    }
+
 
     envoyerMailPaiement(client, abonnement, paiement, publication) {
         return transport.sendMail({

@@ -1,4 +1,5 @@
 const Paiement = require("../data/model/paiement")
+const Communication = require("../data/model/communication")
 
 module.exports = (app, abonnementService, publicationService, clientService, paiementService, communicationService, role, dirName, jwt) => {
 
@@ -15,8 +16,6 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
             if(abonnements === undefined) {
                 return res.status(404).end()
             }
-
-            await abonnementService.checkFinAbonnements(abonnements)
 
             const abonnementsDTO = await abonnementService.getAbonnementsDTO(abonnements, publicationService, clientService)
             return res.json(abonnementsDTO)
@@ -188,7 +187,10 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
             }
 
             communicationService.envoyerMailRelance(client, abonnement, publication)
-                .then(_ => res.status(200).end())
+                .then(async _ => {
+                    await communicationService.dao.insert(new Communication("EMAIL", client.id, `RELANCE_ABONNEMENT_${abonnement.id}`, new Date()))
+                    res.status(200).end()
+                })
                 .catch(err => {
                     console.log(err)
                     res.status(400).end()

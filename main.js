@@ -5,6 +5,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const swaggerUi = require('swagger-ui-express')
 const yaml = require('yamljs')
+const cron = require('node-cron')
 require('dotenv').config();
 
 const UserAccountService = require("./services/useraccount")
@@ -23,7 +24,8 @@ app.use(morgan('dev')); // toutes les requêtes HTTP dans le log du serveur
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/images', express.static('asset/images'));
 
-const connectionString = process.env.CONNECTION_STRING
+// const connectionString = process.env.CONNECTION_STRING
+const connectionString = "postgres://user1:default@localhost/abonnements"
 const db = new pg.Pool({ connectionString: connectionString })
 
 const dirName = __dirname
@@ -37,6 +39,9 @@ const communicationService = new CommunicationService(db)
 
 const jwt = require('./utils/jwt')(userAccountService, clientService)
 const role = require('./utils/role')()
+
+cron.schedule('0 1 * * * *', async () => abonnementService.checkFinAbonnements())
+cron.schedule('* * * 1 * *', async () => abonnementService.envoiAbonnements())
 
 require('./api/useraccount')(app, userAccountService, role, dirName, jwt)
 require('./api/publication')(app, publicationService, abonnementService, role, dirName, jwt)

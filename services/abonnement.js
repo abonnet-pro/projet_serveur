@@ -1,9 +1,16 @@
 const AbonnementDAO = require("../data/dao/abonnementDAO")
+const CommunicationService = require("../services/communication")
+const ClientService = require("../services/client")
+const PublicationService = require("../services/publication")
 const Abonnement = require("../data/model/abonnement")
+const Communication = require("../data/model/communication")
 
 module.exports = class AbonnementService {
     constructor(db) {
         this.dao = new AbonnementDAO(db)
+        this.communicationService = new CommunicationService(db)
+        this.clientService = new ClientService(db)
+        this.publicationService = new PublicationService(db)
     }
 
     newAbonnement(publication, client) {
@@ -27,14 +34,35 @@ module.exports = class AbonnementService {
         return this.dao.insert(abonnementRelance)
     }
 
-    async checkFinAbonnements(abonnements) {
+    async checkFinAbonnements() {
+        let abonnements = await this.dao.getActive()
         let now = new Date()
         for(let abonnement of abonnements) {
             if(abonnement.datefin < now && abonnement.actif || abonnement.dateresiliation < now && abonnement.actif) {
                 abonnement.actif = false
+                await this.dao.update(abonnement)
             }
-            await this.dao.update(abonnement)
+
+            let communications = await this.communicationService.dao.getByClient(abonnement.clientid)
+            if(this.monthDiff(new Date(), abonnement.datefin) <= 2 && this.communicationService.canSendFinAbonnement(communications, abonnement)) {
+                let client = await this.clientService.dao.getById(abonnement.clientid)
+                let publication = await this.publicationService.dao.getById(abonnement.publicationid)
+                await this.communicationService.envoyerFinAbonnement(client, publication)
+                await this.communicationService.dao.insert(new Communication("EMAIL", client.id, `FIN_ABONNEMENT_${abonnement.id}`, new Date()))
+            }
         }
+    }
+
+    async envoiAbonnements() {
+        let abonnements = await this.dao.getActive()
+        for(let abonnement of abonnements) {
+            let client = this.clientService.dao.getById(abonnement.clientid)
+            await this.communicationService.dao.insert(new Communication("COURRIER", client.id, `ENVOI_ABONNEMENT_${abonnement.id}`, new Date()))
+        }
+    }
+
+    monthDiff(dateFrom, dateTo) {
+        return dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
     }
 
     getAbonnementDTO(abonnement, publication, client) {

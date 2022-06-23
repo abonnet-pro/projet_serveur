@@ -14,4 +14,11 @@ module.exports = class CommunicationDAO extends BaseDAO {
                 .catch(err => reject(err))
         })
     }
+
+    getByClient(clientId) {
+        return new Promise((resolve, reject) =>
+            this.db.query("SELECT * FROM communication WHERE clientId = $1", [clientId])
+                .then(res => resolve(res.rows) )
+                .catch(e => reject(e)))
+    }
 }

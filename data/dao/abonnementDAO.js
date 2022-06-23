@@ -43,6 +43,13 @@ module.exports = class AbonnementDAO extends BaseDAO {
                 .catch(e => reject(e)))
     }
 
+    getActive() {
+        return new Promise((resolve, reject) =>
+            this.db.query("SELECT * FROM abonnement WHERE actif = true")
+                .then(res => resolve(res.rows) )
+                .catch(e => reject(e)))
+    }
+
     update(abonnement) {
         return this.db.query("UPDATE abonnement SET actif=$2, paye=$3, dateResiliation=$4, rembourse=$5 WHERE id=$1",
             [abonnement.id, abonnement.actif, abonnement.paye, abonnement.dateresiliation, abonnement.rembourse])
