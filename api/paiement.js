@@ -43,7 +43,7 @@ module.exports = (app, paiementService, abonnementService, clientService, commun
                         .then(_ => {
                             communicationService.envoyerMailPaiement(client, abonnement, paiement, publication)
                                 .then(async _ => {
-                                    await communicationService.dao.insert(new Communication("EMAIL", client.id, "PAIEMENT", new Date()))
+                                    await communicationService.dao.insert(new Communication("EMAIL", client.id, `PAIEMENT_${paiement.id}`, new Date()))
                                     await communicationService.dao.insert(new Communication("COURRIER", client.id, `ENVOI_ABONNEMENT_${abonnement.id}`, new Date()))
                                     res.status(200).end()
                                 })
