@@ -56,6 +56,23 @@ module.exports = class CommunicationService {
         })
     }
 
+    envoyerMailAucunAbonnement(client) {
+        return transport.sendMail({
+            from: process.env.AUTH_MAILER_USER,
+            to: client.login,
+            subject: "Vos abonnements",
+            html: `<h1>Email de relance</h1>
+                   <h2>Bonjour ${client.displayname}</h2>
+                   <p>Nous vous remercions de l'intérêt que vous portez à SubMyZine.</p>
+                   <p>Nous avons remarqué une activité dans notre service de votre part sans adhésion à un abonnement.</p>
+                   <p>Sachez que nos offre sont perpetuellement renouvelé pour vous offrir les meilleur services.</p>
+                   <p>N'hésitez pas à venir consulter nos dernières offres et profiter pleinement de tous les avantages que nous proposons.</p> 
+                   <p>Nous restons à votre disposition pour toute question de votre part.</p>
+                   <p>Cordialement,</p>
+                   <p>L'équipe SubMyZine</p>`
+        })
+    }
+
     envoyerFinAbonnement(client, publication) {
         return transport.sendMail({
             from: process.env.AUTH_MAILER_USER,

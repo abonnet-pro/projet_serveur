@@ -250,4 +250,27 @@ module.exports = (app, clientService, abonnementService, paiementService, public
                 res.status(500).end()
             })
     })
+
+    app.post('/api/client/:id/mail_aucun_abonnement', jwt.validateJWT, role.employe, async (req, res) => {
+        try
+        {
+            let client = await clientService.dao.getById(req.params.id)
+            if(client === undefined) {
+                return res.status(400).send("Impossible de trouver le client")
+            }
+
+            communicationService.envoyerMailAucunAbonnement(client)
+                .then(async _ => {
+                    await communicationService.dao.insert(new Communication("EMAIL", client.id, `RELANCE`, new Date()))
+                    res.status(200).end()
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.status(400).end()
+                })
+        } catch (e) {
+            console.log(e)
+            res.status(400).end()
+        }
+    })
 }
