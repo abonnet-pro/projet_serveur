@@ -44,7 +44,7 @@ module.exports = class UserAccountService
     }
 
     isLoginAllowed(login) {
-        return login.includes("@esimed.fr")
+        return login.includes("@submyzine.fr")
     }
 
     async update(user)
