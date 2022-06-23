@@ -2,7 +2,7 @@ const UserAccount = require('./model/useraccount')
 const Client = require('./model/client')
 const Publication = require('./model/publication')
 
-module.exports = (userAccountService, clientService, publicationService, abonnementService, paiementService) => {
+module.exports = (userAccountService, clientService, publicationService, abonnementService, paiementService, communicationService) => {
     return new Promise(async (resolve, reject) => {
         try {
             await userAccountService.dao.db.query("CREATE TABLE useraccount(id SERIAL PRIMARY KEY, nom TEXT NOT NULL, prenom TEXT NOT NULL, login TEXT NOT NULL, challenge TEXT NOT NULL, role TEXT NOT NULL, active BOOLEAN NOT NULL, premiereConnexion BOOLEAN NOT NULL DEFAULT TRUE)")
@@ -10,6 +10,7 @@ module.exports = (userAccountService, clientService, publicationService, abonnem
             await publicationService.dao.db.query("CREATE TABLE publication(id SERIAL PRIMARY KEY, titre TEXT NOT NULL, nbrNumeroAnnee SMALLINT NOT NULL, photoCouverture TEXT NOT NULL, description TEXT NOT NULL, prixAnnuel REAL NOT NULL, active BOOLEAN NOT NULL DEFAULT TRUE, promotion BOOLEAN NOT NULL DEFAULT FALSE, pourcentagePromo SMALLINT)")
             await abonnementService.dao.db.query("CREATE TABLE abonnement(id SERIAL PRIMARY KEY, clientId INTEGER NOT NULL, publicationId INTEGER NOT NULL, dateDebut DATE, dateFin DATE, actif BOOLEAN NOT NULL, paye BOOLEAN NOT NULL, dateResiliation DATE, rembourse BOOLEAN NOT NULL, FOREIGN KEY(clientId) REFERENCES client(id), FOREIGN KEY(publicationId) REFERENCES publication(id))")
             await paiementService.dao.db.query("CREATE TABLE paiement(id SERIAL PRIMARY KEY, abonnementId INTEGER, type TEXT, montantPaye REAL, datePaiement DATE, transactionId TEXT, montantRembourse REAL, FOREIGN KEY(abonnementId) REFERENCES abonnement(id))")
+            await communicationService.dao.db.query("CREATE TABLE communication(id SERIAL PRIMARY KEY, type TEXT NOT NULL, clientId INTEGER NOT NULL, objet TEXT NOT NULL, date DATE NOT NULL, FOREIGN KEY (clientId) REFERENCES  client(id) ON DELETE CASCADE )")
 
             await userAccountService.dao.insert(new UserAccount("Admin", "ADMIN", "admin@esimed.fr", userAccountService.hashPassword("admin"), "ADMIN", true, false))
 

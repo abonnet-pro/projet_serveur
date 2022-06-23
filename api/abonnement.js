@@ -1,6 +1,6 @@
 const Paiement = require("../data/model/paiement")
 
-module.exports = (app, abonnementService, publicationService, clientService, paiementService, role, dirName, jwt) => {
+module.exports = (app, abonnementService, publicationService, clientService, paiementService, communicationService, role, dirName, jwt) => {
 
     app.get('/api/abonnement', jwt.validateJWT , async (req, res) => {
         try
@@ -187,7 +187,7 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
                 return res.status(400).send("Erreur inconnue")
             }
 
-            abonnementService.envoyerMailRelance(client, abonnement, publication)
+            communicationService.envoyerMailRelance(client, abonnement, publication)
                 .then(_ => res.status(200).end())
                 .catch(err => {
                     console.log(err)

@@ -1,4 +1,6 @@
-module.exports = (app, clientService, abonnementService, paiementService, publicationService, role, dirName, jwt) => {
+const Communication = require("../data/model/communication")
+
+module.exports = (app, clientService, abonnementService, paiementService, publicationService, communicationService, role, dirName, jwt) => {
 
     app.post('/api/client', async (req, res) => {
         const client = req.body
@@ -21,7 +23,18 @@ module.exports = (app, clientService, abonnementService, paiementService, public
         }
 
         clientService.insert(client.nom, client.prenom, client.displayName, client.login, client.dateNaissance, client.lieuNaissance, client.rue, client.cp, client.ville, client.password)
-            .then(res.status(200).end())
+            .then(clientId => {
+                communicationService.envoyerMailInscription(client)
+                    .then(async _ => {
+                        await communicationService.dao.insert(new Communication("EMAIL", clientId, "INSCRIPTION", new Date()))
+                        res.status(200).end()
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        res.status(500).end()
+                    })
+
+            })
             .catch(e => {
                 console.log(e)
                 res.status(500).end()

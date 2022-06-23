@@ -1,4 +1,6 @@
-module.exports = (app, paiementService, abonnementService, role, dirName, jwt) => {
+const Communication = require("../data/model/communication")
+
+module.exports = (app, paiementService, abonnementService, clientService, communicationService, publicationService, role, dirName, jwt) => {
 
     app.post('/api/paiement/valider', async (req, res) => {
         try
@@ -18,6 +20,16 @@ module.exports = (app, paiementService, abonnementService, role, dirName, jwt) =
                 return res.status(400).end()
             }
 
+            let publication = await publicationService.dao.getById(abonnement.publicationid)
+            if(publication === undefined) {
+                return res.status(400).end()
+            }
+
+            let client = await clientService.dao.getById(abonnement.clientid)
+            if(client === undefined) {
+                return res.status(400).end()
+            }
+
             paiement.type = retourPaiement.type
             paiement.montantpaye = retourPaiement.amount
             paiement.transactionid = retourPaiement.transaction
@@ -28,7 +40,17 @@ module.exports = (app, paiementService, abonnementService, role, dirName, jwt) =
                     abonnement.paye = true
                     abonnement.actif = true
                     abonnementService.dao.update(abonnement)
-                        .then(_ => res.status(200).end())
+                        .then(_ => {
+                            communicationService.envoyerMailPaiement(client, abonnement, paiement, publication)
+                                .then(async _ => {
+                                    await communicationService.dao.insert(new Communication("EMAIL", client.id, "PAIEMENT", new Date()))
+                                    res.status(200).end()
+                                })
+                                .catch(e => {
+                                    console.log(e)
+                                    res.status(400).end()
+                                })
+                        })
                         .catch(e => {
                             console.log(e)
                             paiementService.dao.delete(paiement.id)
