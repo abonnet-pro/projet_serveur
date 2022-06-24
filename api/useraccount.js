@@ -1,3 +1,5 @@
+const generator = require('generate-password')
+
 module.exports = (app, svc, role, dirName, jwt) => {
 
     app.post('/api/employe', jwt.validateJWT, role.admin, async (req, res) => {
@@ -12,15 +14,28 @@ module.exports = (app, svc, role, dirName, jwt) => {
         }
 
         if(!svc.isLoginAllowed(useraccount.login)) {
-            return res.status(400).send("Le login ne respecte pas les conditions d'inscriptions des employés (adresse @esimed)")
+            return res.status(400).send("Le login ne respecte pas les conditions d'inscriptions des employés (adresse ...@submyzine.fr)")
         }
 
-        if(!svc.isPwdValid(useraccount.password)) {
-            return res.status(400).send("Le mot de passe ne respecte pas les consignes de securité")
-        }
+        useraccount.password = generator.generate({
+            length: 16,
+            numbers: true,
+            symbols: true,
+            lowercase: true,
+            uppercase: true
+        })
 
-        svc.insert(useraccount.nom, useraccount.prenom, useraccount.login, useraccount.password)
-            .then(res.status(200).end())
+        svc.insert(useraccount.nom, useraccount.prenom, useraccount.login, useraccount.password, useraccount.role)
+            .then(id => {
+                res.json({
+                    id: id,
+                    nom: useraccount.nom,
+                    prenom: useraccount.prenom,
+                    login: useraccount.login,
+                    role: useraccount.role,
+                    password: useraccount.password
+                })
+            })
             .catch(e => {
                 console.log(e)
                 res.status(500).end()
@@ -46,10 +61,12 @@ module.exports = (app, svc, role, dirName, jwt) => {
 
                 const user = await svc.dao.getByLogin(form.login)
                 const userDTO = {
+                    id: user.id,
                     nom: user.nom,
                     prenom: user.prenom,
                     login: user.login,
                     role: user.role,
+                    premiereConnexion: user.premiereconnexion,
                     token: jwt.generateJWT(form.login)
                 }
 
@@ -61,241 +78,76 @@ module.exports = (app, svc, role, dirName, jwt) => {
             })
     })
 
-    app.post('/useraccount/token', jwt.validateJWT, async (req, res) => {
-        const userId = req.user.id
-        if(userId === undefined)
-        {
-            res.status(400).end()
-            return
-        }
+    app.get("/api/employe", jwt.validateJWT, role.admin, async (req, res) => {
         try
         {
-            const user = await svc.dao.getById(userId)
-            if(user === undefined)
-            {
+            const employes = await svc.dao.getAllUsers()
+            if(employes === undefined) {
                 res.status(404).end()
             }
-            res.json({'token': jwt.generateJWT(user.login)})
+
+            return res.json(employes)
         }
         catch (e) {
             res.status(400).end()
         }
     })
 
-    app.get("/useraccount/mail/:login", async (req, res) => {
+    app.get("/api/employe/:id", jwt.validateJWT, role.admin, async (req, res) => {
         try
         {
-            let user = await svc.dao.getByLogin(req.params.login)
-            if(user === undefined)
-            {
+            const employe = await svc.dao.getById(req.params.id)
+            if(employe === undefined) {
                 res.status(404).end()
             }
-            if(!user.active)
-            {
-                user.confirmation = svc.generateLink()
-                user.confirmationdate = new Date().toUTCString()
 
-                await svc.dao.update(user)
-                    .catch(e => {
-                        console.log(e)
-                        res.status(500).end()
-                    })
-
-                svc.sendConfirmationEmail(user)
-                res.status(200).end()
+            let employeDTO = {
+                nom: employe.nom,
+                prenom: employe.prenom,
+                login: employe.login,
+                role: employe.role,
+                active: employe.active,
             }
+
+            return res.json(employeDTO)
         }
-        catch (e)
-        {
-            console.log(e)
+        catch (e) {
             res.status(400).end()
         }
     })
 
-    app.get("/useraccount/resetPassword/:login", async (req, res) => {
+    app.post("/api/employe/:id/init", jwt.validateJWT, role.employe, async (req, res) => {
         try
         {
-            let user = await svc.dao.getByLogin(req.params.login)
-            if(user === undefined)
-            {
+            const employe = await svc.dao.getById(req.params.id)
+            if(employe === undefined) {
                 res.status(404).end()
             }
 
-            user.reset = svc.generateLink()
-            user.resetdate = new Date().toUTCString()
+            const { password } = req.body
+            if(!svc.isPwdValid(password)) {
+                return res.status(400).send("Le mot de passe ne respecte pas les consignes de sécurité")
+            }
 
-            await svc.dao.update(user)
+            employe.challenge = password
+            employe.premiereconnexion = false
+
+            const employeDTO = {
+                id: employe.id,
+                nom: employe.nom,
+                prenom: employe.prenom,
+                login: employe.login,
+                role: employe.role,
+                premiereConnexion: employe.premiereconnexion,
+                token: jwt.generateJWT(employe.login)
+            }
+
+            svc.update(employe)
+                .then(_ => res.json(employeDTO))
                 .catch(e => {
                     console.log(e)
                     res.status(500).end()
                 })
-
-            svc.sendResetPasswordEmail(user)
-            res.status(200).end()
-        }
-        catch (e)
-        {
-            console.log(e)
-            res.status(400).end()
-        }
-    })
-
-    app.get("/useraccount/confirm/:confirmationCode", async (req, res) => {
-        try
-        {
-            let user = await svc.dao.getByConfirmation(req.params.confirmationCode)
-            if(user === undefined)
-            {
-                res.status(404).end()
-            }
-
-            if(svc.getHoursDifference(user.confirmationdate) >= 24 && !user.active)
-            {
-                res.sendFile(`${dirName}/view/expire.html`)
-                return
-            }
-
-            user.active = true
-            user.confirmation = null
-            user.confirmationdate = null
-            user.role = "EMPLOYE"
-
-            await svc.dao.update(user)
-                .then( res.sendFile(`${dirName}/view/confirmation.html`))
-                .catch(e => {
-                    console.log(e)
-                    res.status(500).end()
-                })
-        }
-        catch (e)
-        {
-            console.log(e)
-            res.status(400).end()
-        }
-    })
-
-    app.get("/useraccount/share/:login", jwt.validateJWT, async (req, res) => {
-        try
-        {
-            const userList = await svc.dao.getLikeLoginForShare(req.params.login, req.user.id)
-            if(userList === undefined)
-            {
-                res.status(404).end()
-            }
-            return res.json(userList)
-        }
-        catch (e)
-        {
-            console.log(e.toString())
-            res.status(400).end()
-        }
-    })
-
-    app.get("/useraccount/:login", jwt.validateJWT, async (req, res) => {
-        try
-        {
-            const userList = await svc.dao.getLikeLogin(req.params.login)
-            if(userList === undefined)
-            {
-                res.status(404).end()
-            }
-            return res.json(userList)
-        }
-        catch (e)
-        {
-            console.log(e.toString())
-            res.status(400).end()
-        }
-    })
-
-    app.get("/useraccount/login/:login", jwt.validateJWT, async (req, res) => {
-        try
-        {
-            const useraccount = await svc.dao.getByLogin(req.params.login)
-            if(useraccount === undefined)
-            {
-                res.status(404).end()
-            }
-            return res.json(useraccount)
-        }
-        catch(e)
-        {
-            res.status(400).end()
-        }
-    })
-
-    app.get("/useraccount/id/:id", jwt.validateJWT, async (req, res) => {
-        try
-        {
-            const useraccount = await svc.dao.getById(req.params.id)
-            if(useraccount === undefined)
-            {
-                res.status(404).end()
-            }
-            return res.json(useraccount)
-        }
-        catch (e)
-        {
-            res.status(400).end()
-        }
-    })
-
-    app.get("/useraccount/resetCode/:code", async (req, res) => {
-        try
-        {
-            const useraccount = await svc.dao.getByResetCode(req.params.code)
-            if(useraccount === undefined)
-            {
-                res.status(404).end()
-            }
-            return res.json(useraccount)
-        }
-        catch(e)
-        {
-            res.status(400).end()
-        }
-    })
-
-    app.put("/useraccount/reset",  async (req, res) => {
-        const user = req.body
-        if ((user.id === undefined) || (user.id == null))
-        {
-            return res.status(400).end()
-        }
-
-        svc.update(user)
-            .then(res.status(200).end())
-            .catch(e => {
-                console.log(e)
-                res.status(500).end()
-            })
-    })
-
-    app.put("/useraccount", jwt.validateJWT, async (req, res) => {
-        const user = req.body
-        if ((user.id === undefined) || (user.id == null))
-        {
-            return res.status(400).end()
-        }
-
-        svc.update(user)
-            .then(res.status(200).end())
-            .catch(e => {
-                console.log(e)
-                res.status(500).end()
-            })
-    })
-
-    app.get("/useraccount", jwt.validateJWT, async (req, res) => {
-        try
-        {
-            const users = await svc.dao.getAllUsers()
-            if(users === undefined)
-            {
-                res.status(404).end()
-            }
-
-            return res.json(users)
         }
         catch (e) {
             res.status(400).end()

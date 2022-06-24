@@ -14,7 +14,7 @@ module.exports = (app, clientService, abonnementService, paiementService, public
         }
 
         if(!clientService.isLoginAllowed(client.login)) {
-            return res.status(400).send("Ce type de login (...@esimed.fr) n'est pas autorisé à l'inscription")
+            return res.status(400).send("Ce type de login (...@submyzine.fr) n'est pas autorisé à l'inscription")
         }
 
         if(!clientService.isPwdValid(client.password))

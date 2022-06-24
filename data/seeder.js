@@ -15,7 +15,7 @@ module.exports = (userAccountService, clientService, publicationService, abonnem
             await userAccountService.dao.insert(new UserAccount("Admin", "ADMIN", "admin@submyzine.fr", userAccountService.hashPassword("admin"), "ADMIN", true, false))
 
             for(let i = 0; i < 50; i++) {
-                await userAccountService.dao.insert(new UserAccount("Employe " + i, "EMPLOYE", "employe" + i + "@submyzine.fr", userAccountService.hashPassword("employe"), "EMPLOYE", true, true))
+                await userAccountService.dao.insert(new UserAccount("Employe " + i, "EMPLOYE", "employe" + i + "@submyzine.fr", userAccountService.hashPassword("employe"), "EMPLOYE", true, false))
             }
 
             for(let i = 0; i < 50; i++) {

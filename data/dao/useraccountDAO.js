@@ -36,8 +36,8 @@ module.exports = class UserAccountDAO extends BaseDAO
 
     update(useraccount)
     {
-        return this.db.query("UPDATE useraccount SET displayname=$1, login=$2, challenge=$3, role=$4, active=$5, WHERE id=$6",
-            [useraccount.displayname, useraccount.login, useraccount.challenge, useraccount.role, useraccount.active, useraccount.id])
+        return this.db.query("UPDATE useraccount SET nom=$1, prenom=$2, login=$3, challenge=$4, role=$5, active=$6, premiereconnexion=$7 WHERE id=$8",
+            [useraccount.nom, useraccount.prenom, useraccount.login, useraccount.challenge, useraccount.role, useraccount.active, useraccount.premiereconnexion, useraccount.id])
     }
 
     getAllUsers()
