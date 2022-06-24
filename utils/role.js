@@ -1,13 +1,13 @@
 module.exports = () => {
     return {
         employe(req, res, next) {
-            if(req.user && req.user.role !== 'EMPLOYE' && req.user.role !== 'ADMIN') {
+            if(req.user && req.user.role !== 'EMPLOYE' && req.user.role !== 'ADMIN' && req.user.role !== 'SUPERADMIN') {
                 return res.status(401).end()
             }
             return next()
         },
         admin(req, res, next) {
-            if(req.user && req.user.role !== 'ADMIN') {
+            if(req.user && req.user.role !== 'ADMIN' && req.user.role !== 'SUPERADMIN') {
                 return res.status(401).end()
             }
             return next()

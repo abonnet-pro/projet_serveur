@@ -48,4 +48,14 @@ module.exports = class UserAccountDAO extends BaseDAO
                 .catch(err => reject(err))
         })
     }
+
+    active(employeId) {
+        return this.db.query("UPDATE useraccount SET active = true WHERE id=$1",
+            [employeId])
+    }
+
+    desactive(employeId) {
+        return this.db.query("UPDATE useraccount SET active = false WHERE id=$1",
+            [employeId])
+    }
 }

@@ -102,6 +102,7 @@ module.exports = (app, svc, role, dirName, jwt) => {
             }
 
             let employeDTO = {
+                id: employe.id,
                 nom: employe.nom,
                 prenom: employe.prenom,
                 login: employe.login,
@@ -121,7 +122,11 @@ module.exports = (app, svc, role, dirName, jwt) => {
         {
             const employe = await svc.dao.getById(req.params.id)
             if(employe === undefined) {
-                res.status(404).end()
+                return res.status(400).end()
+            }
+
+            if(employe.role === 'SUPERADMIN') {
+                return res.status(400).end()
             }
 
             const { password } = req.body
@@ -152,5 +157,191 @@ module.exports = (app, svc, role, dirName, jwt) => {
         catch (e) {
             res.status(400).end()
         }
+    })
+
+    app.post("/api/employe/:id/reset", jwt.validateJWT, role.admin, async (req, res) => {
+        try
+        {
+            const employe = await svc.dao.getById(req.params.id)
+            if(employe === undefined) {
+                res.status(404).end()
+            }
+
+            if(employe.role === 'SUPERADMIN') {
+                return res.status(400).end()
+            }
+
+            const passwordGenerate = generator.generate({
+                length: 16,
+                numbers: true,
+                symbols: true,
+                lowercase: true,
+                uppercase: true
+            })
+
+            employe.challenge = passwordGenerate
+            employe.premiereconnexion = true
+
+            svc.update(employe)
+                .then(_ => res.json({ password: passwordGenerate }))
+                .catch(e => {
+                    console.log(e)
+                    res.status(500).end()
+                })
+        }
+        catch (e) {
+            res.status(400).end()
+        }
+    })
+
+    app.post('/api/employe/:id/activer', jwt.validateJWT, role.admin, async (req, res) => {
+        const employe = await svc.dao.getById(req.params.id)
+        if(!employe) {
+            return res.status(400).send("Impossible de trouver le client")
+        }
+
+        if(employe.active) {
+            return res.status(400).send("Le compte est déjà activé")
+        }
+
+        if(employe.role === 'SUPERADMIN') {
+            return res.status(400).end()
+        }
+
+        svc.dao.active(employe.id)
+            .then(() => {
+                svc.dao.getById(employe.id)
+                    .then(async employe => {
+
+                        const employeDTO = {
+                            id: employe.id,
+                            nom: employe.nom,
+                            prenom: employe.prenom,
+                            login: employe.login,
+                            role: employe.role,
+                            active: employe.active,
+                        }
+
+                        res.json(employeDTO)
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        res.status(500).end()
+                    })
+            })
+            .catch(e => {
+                console.log(e)
+                res.status(500).end()
+            })
+    })
+
+    app.post('/api/employe/:id/desactiver', jwt.validateJWT, role.admin, async (req, res) => {
+        const employe = await svc.dao.getById(req.params.id)
+        if(!employe) {
+            return res.status(400).send("Impossible de trouver le client")
+        }
+
+        if(!employe.active) {
+            return res.status(400).send("Le compte est déjà désactivé")
+        }
+
+        if(employe.role === 'SUPERADMIN') {
+            return res.status(400).end()
+        }
+
+        svc.dao.desactive(employe.id)
+            .then(() => {
+                svc.dao.getById(employe.id)
+                    .then(async employe => {
+
+                        const employeDTO = {
+                            id: employe.id,
+                            nom: employe.nom,
+                            prenom: employe.prenom,
+                            login: employe.login,
+                            role: employe.role,
+                            active: employe.active,
+                        }
+
+                        res.json(employeDTO)
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        res.status(500).end()
+                    })
+            })
+            .catch(e => {
+                console.log(e)
+                res.status(500).end()
+            })
+    })
+
+    app.delete("/api/employe/:id", jwt.validateJWT, role.admin, async (req, res) => {
+        try
+        {
+            const employe = await svc.dao.getById(req.params.id)
+            if (employe === undefined) {
+                return res.status(400).send("Impossible de trouver l'employé")
+            }
+
+            if(employe.role === 'SUPERADMIN') {
+                return res.status(400).end()
+            }
+
+            svc.dao.delete(req.params.id)
+                .then(res.status(200).end())
+                .catch(e => {
+                    console.log(e)
+                    res.status(500).end()
+                })
+        } catch(e) {
+            console.log(e)
+            return res.status(400).end()
+        }
+    })
+
+    app.patch('/api/employe/:id', jwt.validateJWT, role.admin, async (req, res) => {
+        const employe = await svc.dao.getById(req.params.id)
+        if(employe === undefined) {
+            return res.status(400).send("Impossible de trouver l'employé")
+        }
+
+        if(employe.role === 'SUPERADMIN') {
+            return res.status(400).end()
+        }
+
+        const form = req.body
+
+        if(!svc.isValid(form)) {
+            return res.status(400).send("Informations invalides")
+        }
+
+        employe.nom = form.nom
+        employe.prenom = form.prenom
+        employe.role = form.role
+
+        svc.update(employe)
+            .then(() => {
+                svc.dao.getById(employe.id)
+                    .then(_ => {
+                        const employeDTO = {
+                            id: employe.id,
+                            nom: employe.nom,
+                            prenom: employe.prenom,
+                            login: employe.login,
+                            role: employe.role,
+                            active: employe.active,
+                        }
+                        res.json(employeDTO)
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        res.status(500).end()
+                    })
+            })
+            .catch(e => {
+                console.log(e)
+                res.status(500).end()
+            })
     })
 }

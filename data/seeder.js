@@ -12,7 +12,7 @@ module.exports = (userAccountService, clientService, publicationService, abonnem
             await paiementService.dao.db.query("CREATE TABLE paiement(id SERIAL PRIMARY KEY, abonnementId INTEGER, type TEXT, montantPaye REAL, datePaiement DATE, transactionId TEXT, montantRembourse REAL, FOREIGN KEY(abonnementId) REFERENCES abonnement(id))")
             await communicationService.dao.db.query("CREATE TABLE communication(id SERIAL PRIMARY KEY, type TEXT NOT NULL, clientId INTEGER NOT NULL, objet TEXT NOT NULL, date DATE NOT NULL, FOREIGN KEY (clientId) REFERENCES  client(id) ON DELETE CASCADE )")
 
-            await userAccountService.dao.insert(new UserAccount("Admin", "ADMIN", "admin@submyzine.fr", userAccountService.hashPassword("admin"), "ADMIN", true, false))
+            await userAccountService.dao.insert(new UserAccount("Admin", "ADMIN", "admin@submyzine.fr", userAccountService.hashPassword("admin"), "SUPERADMIN", true, false))
 
             for(let i = 0; i < 50; i++) {
                 await userAccountService.dao.insert(new UserAccount("Employe " + i, "EMPLOYE", "employe" + i + "@submyzine.fr", userAccountService.hashPassword("employe"), "EMPLOYE", true, false))
