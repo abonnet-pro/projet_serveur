@@ -11,18 +11,35 @@ module.exports = (app, publicationService, abonnementService, role, dirName, jwt
         }
 
         const tempPath = req.file.path
-        const targetPath = req.file.path + ".png"
+        const targetPath = req.file.path + path.extname(req.file.originalname).toLowerCase()
 
-        if (path.extname(req.file.originalname).toLowerCase() === ".png") {
-            fs.rename(tempPath, targetPath, err => {
-                if(err) return res.status(500)
-                res.status(200).json({ imgUpload: req.file.filename + ".png" })
-            })
-        } else {
-            fs.unlink(tempPath, err => {
-                if(err) return res.status(500)
-                res.status(400).send("Images png seulement")
-            })
+        fs.rename(tempPath, targetPath, err => {
+            if(err) {
+                fs.unlink(tempPath, err => {
+                    if(err) return res.status(500)
+                    res.status(400).end()
+                })
+                return res.status(500)
+            }
+            res.status(200).json({ imgUpload: req.file.filename + path.extname(req.file.originalname).toLowerCase() })
+        })
+    })
+
+    app.get('/api/upload', jwt.validateJWT, role.employe, async (req, res) => {
+        try {
+            let directory_name = "asset/images";
+            let filenames = fs.readdirSync(directory_name);
+            let retour = {
+                images: []
+            }
+
+            filenames.forEach((file) => {
+                retour.images.push(file)
+            });
+
+            res.json(retour)
+        } catch (e) {
+            res.status(400).end()
         }
     })
 
