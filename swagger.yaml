@@ -26,6 +26,42 @@ paths:
         400:
           description: Erreur, voir descriptif de l'erreur
 
+    get:
+      summary: Récupère la liste des employés.
+      tags:
+        - Employe
+      responses:
+        200:
+          description: Employés récupérés
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employe'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
+  /employe/{id}:
+    get:
+      summary: Récupère un employé.
+      tags:
+        - Employe
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id du client
+
+      responses:
+        200:
+          description: Employé récupéré
+          schema:
+            $ref: '#/definitions/employe'
+        400:
+          description: Erreur, voir descriptif de l'erreur
+
   /employe/authenticate:
     post:
       summary: Authentifie un employé.
@@ -186,6 +222,26 @@ paths:
             $ref: '#/definitions/clientToken'
         400:
           description: Erreur, voir descriptif de l'erreur
+
+  /client/{id}/mail_aucun_abonnement:
+    post:
+      summary: Envoi un mail au client si celui-ci n'a aucun abonnement en cours.
+      tags:
+        - Client
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id du client
+      responses:
+        200:
+          description: Email envoyé
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
 
   /upload:
     post:
@@ -470,6 +526,27 @@ paths:
       responses:
         200:
           description: Email envoyé
+        400:
+          description: Erreur, voir descriptif de l'erreur
+        401:
+          description: Accès non autorisé
+
+  /paiement/{id}:
+    get:
+      summary: Récupère un paiement.
+      tags:
+        - Paiement
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Id du paiement
+      responses:
+        200:
+          description: Paiement récupéré
+          schema:
+            $ref: '#/definitions/paiement'
         400:
           description: Erreur, voir descriptif de l'erreur
         401:
