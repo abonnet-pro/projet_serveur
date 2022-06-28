@@ -51,11 +51,10 @@ require('./api/client')(app, clientService, abonnementService, paiementService, 
 require('./api/abonnement')(app, abonnementService, publicationService, clientService, paiementService, communicationService, role, dirName, jwt)
 require('./api/paiement')(app, paiementService, abonnementService, clientService, communicationService, publicationService, role, dirName, jwt)
 require('./data/seeder')(userAccountService, clientService, publicationService, abonnementService, paiementService, communicationService)
-    // .then(_ => app.listen(3332))
 
 https.createServer({
     key: fs.readFileSync('./security/cert.key'),
     cert: fs.readFileSync('./security/cert.pem')
-}, app).listen(3333, () => {
+}, app).listen(3332, () => {
     console.log('Listening...')
 })
