@@ -1,6 +1,7 @@
 const pg = require('pg')
 const express = require('express')
 const https = require('https')
+const http = require('http')
 require('https').globalAgent.options.ca = require('ssl-root-cas').create();
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -52,9 +53,16 @@ require('./api/abonnement')(app, abonnementService, publicationService, clientSe
 require('./api/paiement')(app, paiementService, abonnementService, clientService, communicationService, publicationService, role, dirName, jwt)
 require('./data/seeder')(userAccountService, clientService, publicationService, abonnementService, paiementService, communicationService)
 
-https.createServer({
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer({
     key: fs.readFileSync('./security/cert.key'),
     cert: fs.readFileSync('./security/cert.pem')
-}, app).listen(3332, () => {
-    console.log('Listening...')
+}, app)
+
+httpServer.listen(80, () => {
+    console.log('HTTP Server running on port 80');
+});
+
+httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
 })
