@@ -28,7 +28,8 @@ app.use(morgan('dev')); // toutes les requêtes HTTP dans le log du serveur
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/images', express.static('asset/images'));
 
-const connectionString = process.env.CONNECTION_STRING
+// const connectionString = process.env.CONNECTION_STRING
+const connectionString = "postgres://user1:default@localhost/abonnements"
 const db = new pg.Pool({ connectionString: connectionString })
 
 const dirName = __dirname
@@ -59,8 +60,8 @@ const httpsServer = https.createServer({
     cert: fs.readFileSync('./security/cert.pem')
 }, app)
 
-httpServer.listen(80, () => {
-    console.log('HTTP Server running on port 80');
+httpServer.listen(81, () => {
+    console.log('HTTP Server running on port 81');
 });
 
 httpsServer.listen(443, () => {
