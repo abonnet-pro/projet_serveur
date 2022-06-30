@@ -22,11 +22,6 @@ module.exports = (userAccountService, clientService, publicationService, abonnem
                 await clientService.dao.insert(new Client("Client " + i, "Client", "Client", "client" + i + "@client.fr", "0612345678","14/01/1993", "Saint-Etienne", "2 rue rascas", "84000", "Avignon", userAccountService.hashPassword("client"), "CLIENT", true))
             }
 
-            for(let i = 0; i < 50; i++) {
-                await publicationService.dao.insert(new Publication("France Promo", 12, "fe986c39ebe69725d4493c9f269994ed.png", "France football magazine", 99.99, true, 50))
-                await publicationService.dao.insert(new Publication("Chicken", 12, "562089e4f4a84248783dd23a19b89d6f.png", "Chicken magazine", 54.99, false, null))
-            }
-
             resolve()
         }
         catch (e)
