@@ -124,4 +124,15 @@ module.exports = class CommunicationService {
                    <p>L'équipe SubMyZine</p>`
         })
     }
+
+    envoyerMailContact(client, sujet, message) {
+        return transport.sendMail({
+            from: process.env.AUTH_MAILER_USER,
+            to: process.env.AUTH_MAILER_USER,
+            subject: sujet,
+            html: `<h3>Mail contact de ${client.login}</h3>
+                   <p>${message}</p>
+                   <p>${client.nom} ${client.prenom}</p>`
+        })
+    }
 }

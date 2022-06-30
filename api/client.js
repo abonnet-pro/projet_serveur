@@ -283,4 +283,25 @@ module.exports = (app, clientService, abonnementService, paiementService, public
             res.status(400).end()
         }
     })
+
+    app.post('/api/client/contact', jwt.validateJWT, async (req, res) => {
+        try
+        {
+            let contact = req.body
+
+            if(!contact.sujet && !contact.message) {
+                return res.status(400).send("Informations invalides")
+            }
+
+            communicationService.envoyerMailContact(req.user, contact.sujet, contact.message)
+                .then(res.status(200).end())
+                .catch(err => {
+                    console.log(err)
+                    res.status(400).end()
+                })
+        } catch (e) {
+            console.log(e)
+            res.status(400).end()
+        }
+    })
 }
