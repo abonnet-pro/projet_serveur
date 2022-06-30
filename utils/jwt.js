@@ -25,6 +25,10 @@ module.exports = (userAccountService, clientService) => {
                         return res.status(401).end()
                     }
 
+                    if(!req.user.active) {
+                        return res.status(401).end()
+                    }
+
                     return next()
                 } catch(e) {
                     console.log(e)
