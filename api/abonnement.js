@@ -212,6 +212,7 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
         {
             await abonnementService.checkFinAbonnements()
             await abonnementService.envoiAbonnements()
+            return res.status(200).end()
         } catch (e) {
             console.log(e)
             res.status(400).end()
