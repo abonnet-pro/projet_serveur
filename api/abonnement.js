@@ -206,4 +206,15 @@ module.exports = (app, abonnementService, publicationService, clientService, pai
             res.status(400).end()
         }
     })
+
+    app.post('/api/abonnement/cron', jwt.validateJWT, role.admin, async (req, res) => {
+        try
+        {
+            await abonnementService.checkFinAbonnements()
+            await abonnementService.envoiAbonnements()
+        } catch (e) {
+            console.log(e)
+            res.status(400).end()
+        }
+    })
 }
