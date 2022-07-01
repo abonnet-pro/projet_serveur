@@ -38,7 +38,7 @@ module.exports = class AbonnementService {
         let abonnements = await this.dao.getActive()
         let now = new Date()
         for(let abonnement of abonnements) {
-            if(abonnement.datefin < now && abonnement.actif || abonnement.dateresiliation < now && abonnement.actif) {
+            if(abonnement.datefin < now && abonnement.actif || abonnement.dateresiliation !== null && abonnement.dateresiliation < now && abonnement.actif) {
                 abonnement.actif = false
                 await this.dao.update(abonnement)
             }
